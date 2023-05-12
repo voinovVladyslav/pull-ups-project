@@ -34,21 +34,81 @@ def test_create_user_with_existing_email_fail(
     assert get_user_model().objects.count() == 1
 
 
-def test_create_user_without_password_fail():
-    assert False
+def test_create_user_without_password_fail(
+        db, api_client: APIClient, user_email
+):
+    user = get_user_model()
+    payload = {
+        'email': user_email,
+        'password':''
+    }
+    response = api_client.post(CREATE_USER_URL, data=payload)
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert get_user_model().objects.count() == 0
 
 
-def test_create_user_with_existing_password_success():
-    assert False
+def test_create_user_with_existing_password_success(
+        db, api_client: APIClient, user_password
+):
+    user = get_user_model()
+    user_email_1 = 'test1@gmail.com'
+    user_email_2 = 'test2@gmail.com'
+    user.objects.create_user(user_email_1, user_password)
+    payload = {
+        'email': user_email_2,
+        'password': user_password,
+    }
+    response = api_client.post(CREATE_USER_URL, data=payload)
+    assert response.status_code == status.HTTP_201_CREATED
+    assert get_user_model().objects.count() == 2
 
 
-def test_create_user_without_data_fail():
-    assert False
+def test_create_user_without_data_fail(
+        db, api_client: APIClient
+):
+    user = get_user_model()
+    payload = {
+        'email': '',
+        'password':''
+    }
+    response = api_client.post(CREATE_USER_URL, data=payload)
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert get_user_model().objects.count() == 0
 
 
-# parametrize
-def test_create_user_wrong_emails_fail():
-    assert False
+@pytest.mark.parametrize(
+    'email_name,response_code',
+    [
+        ('usergmail.com', status.HTTP_400_BAD_REQUEST),
+        ('user@gmailcom', status.HTTP_400_BAD_REQUEST),
+        ('user gmail@gmail.com', status.HTTP_400_BAD_REQUEST),
+        ('user@gmail..com', status.HTTP_400_BAD_REQUEST),
+        ('user@gmail_com', status.HTTP_400_BAD_REQUEST),
+        ('юзер@gmail.com', status.HTTP_400_BAD_REQUEST),
+    ],
+    ids=[
+        'MISSING @ SYMBOL',
+        'MISSING DOT IN TOP-LEVEL DOMAIN',
+        'SPACE USAGE',
+        'INVALID DOMAIN FORMAT',
+        'USE OF FORBIDDEN CHARACTER',
+        'WITH CYRILLIC CHARACTERS'
+    ]
+)
+def test_create_user_wrong_emails_fail(
+        db,
+        api_client: APIClient,
+        user_password,
+        email_name,
+        response_code,
+):
+    payload = {
+        'email': email_name,
+        'password':user_password
+    }
+    response = api_client.post(CREATE_USER_URL, data=payload)
+    assert response.status_code == response_code
+    assert get_user_model().objects.count() == 0
 
 
 @pytest.mark.parametrize(
