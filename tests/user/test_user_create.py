@@ -40,7 +40,7 @@ def test_create_user_without_password_fail(
     user = get_user_model()
     payload = {
         'email': user_email,
-        'password':''
+        'password': ''
     }
     response = api_client.post(CREATE_USER_URL, data=payload)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -69,7 +69,7 @@ def test_create_user_without_data_fail(
     user = get_user_model()
     payload = {
         'email': '',
-        'password':''
+        'password': ''
     }
     response = api_client.post(CREATE_USER_URL, data=payload)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -104,7 +104,7 @@ def test_create_user_wrong_emails_fail(
 ):
     payload = {
         'email': email_name,
-        'password':user_password
+        'password': user_password
     }
     response = api_client.post(CREATE_USER_URL, data=payload)
     assert response.status_code == response_code
