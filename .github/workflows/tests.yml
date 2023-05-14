@@ -17,7 +17,23 @@ jobs:
                   python -m pip install --upgrade pip
                   pip install -r requirements.txt
                   cp .env.example .env
-            - name: Lint with pycodestyle
-              run: pycodestyle .
             - name: Test with pytest
               run: pytest
+
+    linting:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: ["3.11"]
+        steps:
+            - uses: actions/checkout@v3
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ matrix.python-version }}
+            - name: Install dependencies
+              run: |
+                  pip install pycodestyle
+                  cp .env.example .env
+            - name: Lint with pycodestyle
+              run: pycodestyle .
