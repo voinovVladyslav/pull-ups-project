@@ -4,11 +4,12 @@ from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 
-from .fixtures import api_client, user_email, user_password, user
+from .fixtures import api_client, user_email, user_password, create_user
 from .urls import LOGIN_USER_URL
 
 
-def test_login_user_succcess(db, api_client: APIClient, user, user_password):
+def test_login_user_succcess(db, api_client: APIClient, user_password, create_user):
+    user = create_user()
     payload = {
         'email': user.email,
         'password': user_password,
@@ -27,7 +28,8 @@ def test_login_user_nonexistent_email(db, api_client: APIClient, user_password, 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
-def test_login_with_missing_email_or_password(db, api_client: APIClient, user):
+def test_login_with_missing_email_or_password(db, api_client: APIClient, create_user):
+    user = create_user()
     payload = {
         'email': user.email,
         'password': '',
@@ -55,11 +57,12 @@ def test_login_with_missing_email_or_password(db, api_client: APIClient, user):
 def test_allowed_methods_for_login_user(
         db,
         api_client: APIClient,
-        user,
         user_password,
         method_name,
         response_code,
+        create_user,
 ):
+    user = create_user()
     payload = {
         'email': user.email,
         'password': user_password,
