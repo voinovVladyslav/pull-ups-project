@@ -4,7 +4,8 @@ from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 
-from .fixtures import api_client, user_email, user_password, create_user
+from tests.fixtures import api_client
+from .fixtures import user_email, user_password, create_user
 from .urls import LOGIN_USER_URL
 
 
