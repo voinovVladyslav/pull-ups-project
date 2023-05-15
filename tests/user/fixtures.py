@@ -20,5 +20,5 @@ def create_user(db, django_user_model, user_password, user_email):
         kwargs['password'] = user_password
         if 'email' not in kwargs:
             kwargs['email'] = user_email
-            return django_user_model.objects.create_user(**kwargs)
+        return django_user_model.objects.create_user(**kwargs)
     return make_user
