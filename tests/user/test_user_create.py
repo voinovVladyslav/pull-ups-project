@@ -3,7 +3,8 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
 
-from .fixtures import api_client, user_email, user_password
+from tests.fixtures import api_client
+from .fixtures import user_email, user_password
 from .urls import CREATE_USER_URL
 
 
