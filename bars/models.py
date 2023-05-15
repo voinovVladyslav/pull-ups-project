@@ -3,6 +3,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Address(models.Model):
+    class Meta:
+        verbose_name = 'Address'
+        verbose_name_plural = 'Addresses'
+
     country = models.CharField(
         max_length=128,
     )
@@ -26,6 +30,10 @@ class Address(models.Model):
 
 
 class Bars(models.Model):
+    class Meta:
+        verbose_name = 'Pull Up Bars'
+        verbose_name_plural = 'Pull Up Bars'
+
     title = models.CharField(
         max_length=255,
         null=True,
