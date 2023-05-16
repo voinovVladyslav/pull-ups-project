@@ -15,14 +15,18 @@ class AddresSerializer(serializers.ModelSerializer):
 
 
 class BarsSerializer(serializers.ModelSerializer):
+    address = AddresSerializer(required=True, read_only=False)
+
     class Meta:
         model = Bars
         fields = [
+            'id',
             'title',
             'latitude',
             'longitude',
             'address',
         ]
+        read_only_fiels = ['id']
 
     def validate_latitude(self, value):
         if value < -90 or value > 90:
