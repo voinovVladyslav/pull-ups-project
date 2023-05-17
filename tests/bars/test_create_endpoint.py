@@ -19,3 +19,18 @@ def test_create_bars_with_address_success(
     bars = Bars.objects.first()
     address = Address.objects.first()
     assert bars.address == address
+
+
+@pytest.mark.xfail
+def test_create_bars_without_address_fail():
+    assert False
+
+
+@pytest.mark.xfail
+def test_create_bars_with_coordinates_out_of_range():
+    assert False
+
+
+@pytest.mark.xfail
+def test_create_bars_with_blank_values_fail():
+    assert False
