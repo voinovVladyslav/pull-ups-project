@@ -28,3 +28,23 @@ def test_update_bars_with_address_success(
     assert bars.latitude == bars_payload['latitude']
     assert bars.longitude == bars_payload['longitude']
     assert bars.address == address
+
+
+@pytest.mark.xfail
+def test_update_bars_with_empty_values_fail():
+    assert False
+
+
+@pytest.mark.xfail
+def test_partial_update_address_only_success():
+    assert False
+
+
+@pytest.mark.xfail
+def test_partial_update_bars_only_success():
+    assert False
+
+
+@pytest.mark.xfail
+def test_update_with_coordinates_out_of_range_fail():
+    assert False
