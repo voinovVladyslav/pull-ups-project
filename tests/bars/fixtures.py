@@ -18,7 +18,7 @@ def address_payload():
 def bars_payload(address_payload):
     return {
         'title': 'bars title',
-        'longtitude': Decimal('10.10'),
+        'longitude': Decimal('10.10'),
         'latitude': Decimal('10.10'),
         'address': address_payload
     }

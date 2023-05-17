@@ -41,3 +41,22 @@ class BarsSerializer(serializers.ModelSerializer):
                 "Longitude must be between -180 and 180."
             )
         return value
+
+    def create(self, validated_data):
+        address_data = validated_data.pop('address')
+        address = Address.objects.create(**address_data)
+        bars = Bars.objects.create(address=address, **validated_data)
+        return bars
+
+    def update(self, instance, validated_data):
+        address_data = validated_data.pop('address')
+
+        for key, value in address_data.items():
+            setattr(instance.address, key, value)
+        instance.address.save()
+
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
+
+        return instance
