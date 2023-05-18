@@ -5,12 +5,14 @@ from model_bakery.baker import make
 
 from bars.models import Address, Bars
 from tests.fixtures import api_client
-from .fixtures import bars_payload, address_payload, create_bars
+from .fixtures import bars_payload, address_payload
 from .urls import get_bars_detail_url
 
 
-def test_delete_success(db, api_client, create_bars):
-    bars = create_bars
+def test_delete_success(db, api_client):
+    address = make(Address)
+    bars = make(Bars, address=address)
+
     assert Bars.objects.count() == 1
 
     url = get_bars_detail_url(bars.id)
@@ -19,8 +21,9 @@ def test_delete_success(db, api_client, create_bars):
     assert Bars.objects.count() == 0
 
 
-def test_delete_nonexisting_bars_fail(db, api_client, create_bars):
-    bars = create_bars
+def test_delete_nonexisting_bars_fail(db, api_client):
+    address = make(Address)
+    bars = make(Bars, address=address)
     assert Bars.objects.count() == 1
 
     url = get_bars_detail_url(bars.id + 1)
