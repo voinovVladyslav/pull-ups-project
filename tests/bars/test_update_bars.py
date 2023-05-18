@@ -67,8 +67,9 @@ def test_partial_update_address_only_success(db, api_client, create_bars):
     assert bars.longitude == payload['longitude']
     assert bars.latitude == payload['latitude']
 
+
 @pytest.mark.parametrize(
-'object_name, value',
+    'object_name, value',
     [
         ('title', 'Updated Country', ),
         ('longitude', Decimal('110.00')),
@@ -80,7 +81,9 @@ def test_partial_update_address_only_success(db, api_client, create_bars):
         'latitude UPDATE',
     ]
 )
-def test_partial_update_bars_only_success(db, api_client, create_bars, object_name, value):
+def test_partial_update_bars_only_success(
+    db, api_client, create_bars, object_name, value
+):
     bars = create_bars
 
     assert Bars.objects.count() == 1
