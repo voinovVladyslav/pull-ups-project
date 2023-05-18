@@ -10,11 +10,11 @@ from .urls import BARS_LIST_URL
 
 
 def test_create_bars_with_address_success(
-        db, api_client, bars_payload
+        db, superuser_client, bars_payload
 ):
     assert Address.objects.count() == 0
     assert Bars.objects.count() == 0
-    response = api_client.post(BARS_LIST_URL, bars_payload, format='json')
+    response = superuser_client.post(BARS_LIST_URL, bars_payload, format='json')
     assert response.status_code == status.HTTP_201_CREATED
     assert Address.objects.count() == 1
     assert Bars.objects.count() == 1
