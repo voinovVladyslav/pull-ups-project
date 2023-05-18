@@ -2,6 +2,8 @@ from decimal import Decimal
 
 import pytest
 
+from bars.models import Address, Bars
+
 
 @pytest.fixture
 def address_payload():
@@ -22,3 +24,11 @@ def bars_payload(address_payload):
         'latitude': Decimal('10.10'),
         'address': address_payload
     }
+
+
+@pytest.fixture
+def create_bars(db, address_payload, bars_payload):
+    address = Address.objects.create(**address_payload)
+    bars_payload['address'] = address
+    bars = Bars.objects.create(**bars_payload)
+    return bars
