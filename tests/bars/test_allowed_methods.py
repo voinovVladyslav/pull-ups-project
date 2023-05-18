@@ -3,10 +3,10 @@ from rest_framework import status
 
 
 from .urls import BARS_LIST_URL, get_bars_detail_url
-from tests.fixtures import (
-    api_client, create_user, user_email, user_password
+from tests.user.fixtures import (
+    superuser_email, superuser_password, create_superuser
 )
-
+from tests.fixtures import superuser_client, api_client
 
 @pytest.mark.parametrize(
     'method_name,response_code',
@@ -26,9 +26,9 @@ from tests.fixtures import (
     ]
 )
 def test_only_get_post_allowed_for_list_view(
-        db, api_client, method_name, response_code
+        db, superuser_client, method_name, response_code
 ):
-    response = getattr(api_client, method_name)(BARS_LIST_URL)
+    response = getattr(superuser_client, method_name)(BARS_LIST_URL)
     assert response.status_code == response_code
 
 
@@ -50,7 +50,7 @@ def test_only_get_post_allowed_for_list_view(
     ]
 )
 def test_get_put_patch_delete_allowed(
-        db, api_client, method_name, response_code
+        db, superuser_client, method_name, response_code
 ):
-    response = getattr(api_client, method_name)(get_bars_detail_url(1))
+    response = getattr(superuser_client, method_name)(get_bars_detail_url(1))
     assert response.status_code == response_code
