@@ -4,13 +4,14 @@ from rest_framework import status
 from model_bakery.baker import make
 
 from bars.models import Address, Bars
-from tests.fixtures import api_client
+from tests.fixtures import superuser_client, api_client
+from tests.user.fixtures import create_superuser, superuser_email, superuser_password
 from .fixtures import bars_payload, address_payload
 from .urls import get_bars_detail_url
 
 
 def test_update_bars_with_address_success(
-        db, api_client, bars_payload
+        db, superuser_client, bars_payload
 ):
     address = make(Address)
     bars = make(Bars, address=address)
@@ -19,7 +20,7 @@ def test_update_bars_with_address_success(
     assert Bars.objects.count() == 1
 
     url = get_bars_detail_url(bars.id)
-    response = api_client.patch(url, bars_payload, format='json')
+    response = superuser_client.patch(url, bars_payload, format='json')
     assert response.status_code == status.HTTP_200_OK
 
     address.refresh_from_db()
@@ -31,7 +32,7 @@ def test_update_bars_with_address_success(
     assert bars.address == address
 
 
-def test_update_bars_with_empty_values_fail(db, api_client):
+def test_update_bars_with_empty_values_fail(db, superuser_client):
     address = make(Address)
     bars = make(Bars, address=address)
     assert Bars.objects.count() == 1
@@ -43,12 +44,12 @@ def test_update_bars_with_empty_values_fail(db, api_client):
         'latitude': '',
         'address': ''
     }
-    response = api_client.patch(url, payload, format='json')
+    response = superuser_client.patch(url, payload, format='json')
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
-def test_partial_update_address_only_success(db, api_client):
+def test_partial_update_address_only_success(db, superuser_client):
     address = make(Address)
     bars = make(Bars, address=address)
     assert Bars.objects.count() == 1
@@ -63,7 +64,7 @@ def test_partial_update_address_only_success(db, api_client):
             'postal_code': 'Update postal_code',
         }
     }
-    response = api_client.patch(url, payload, format='json')
+    response = superuser_client.patch(url, payload, format='json')
     response.status_code == status.HTTP_200_OK
 
     bars.refresh_from_db()
@@ -89,7 +90,7 @@ def test_partial_update_address_only_success(db, api_client):
     ]
 )
 def test_partial_update_bars_only_success(
-    db, api_client, object_name, value
+    db, superuser_client, object_name, value
 ):
     address = make(Address)
     bars = make(Bars, address=address)
@@ -100,7 +101,7 @@ def test_partial_update_bars_only_success(
     payload = {
         object_name: value
     }
-    response = api_client.patch(url, payload, format='json')
+    response = superuser_client.patch(url, payload, format='json')
 
     assert response.status_code == status.HTTP_200_OK
 
@@ -109,7 +110,7 @@ def test_partial_update_bars_only_success(
     assert getattr(bars, object_name) == payload[object_name]
 
 
-def test_update_with_coordinates_out_of_range_fail(db, api_client):
+def test_update_with_coordinates_out_of_range_fail(db, superuser_client):
     address = make(Address)
     bars = make(Bars, address=address)
 
@@ -120,7 +121,7 @@ def test_update_with_coordinates_out_of_range_fail(db, api_client):
         'longitude': Decimal('-190.00'),
         'latitude': Decimal('95.00'),
     }
-    response = api_client.patch(url, payload, format='json')
+    response = superuser_client.patch(url, payload, format='json')
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
