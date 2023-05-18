@@ -49,7 +49,7 @@ class BarsSerializer(serializers.ModelSerializer):
         return bars
 
     def update(self, instance, validated_data):
-        address_data = validated_data.pop('address')
+        address_data = validated_data.pop('address',{})
 
         for key, value in address_data.items():
             setattr(instance.address, key, value)
