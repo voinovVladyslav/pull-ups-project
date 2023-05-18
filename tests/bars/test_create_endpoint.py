@@ -1,4 +1,5 @@
 import pytest
+from decimal import Decimal
 from rest_framework import status
 
 from bars.models import Address, Bars
@@ -21,16 +22,39 @@ def test_create_bars_with_address_success(
     assert bars.address == address
 
 
-@pytest.mark.xfail
-def test_create_bars_without_address_fail():
-    assert False
+def test_create_bars_without_address_fail(db, api_client):
+    payload = {
+        'title': 'bars title',
+        'longitude': Decimal('10.10'),
+        'latitude': Decimal('10.10'),
+        'address': ''
+    }
+    response = api_client.post(BARS_LIST_URL, payload, format='json')
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert Bars.objects.count() == 0
 
 
-@pytest.mark.xfail
-def test_create_bars_with_coordinates_out_of_range():
-    assert False
+def test_create_bars_with_coordinates_out_of_range(
+        db, api_client, address_payload
+):
+    payload = {
+        'title': 'bars title',
+        'longitude': Decimal('-181.01'),
+        'latitude': Decimal('93.00'),
+        'address': address_payload
+    }
+    response = api_client.post(BARS_LIST_URL, payload, format='json')
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert Bars.objects.count() == 0
 
 
-@pytest.mark.xfail
-def test_create_bars_with_blank_values_fail():
-    assert False
+def test_create_bars_with_blank_values_fail(db, api_client):
+    payload = {
+        'title': '',
+        'longitude': '',
+        'latitude': '',
+        'address': ''
+    }
+    response = api_client.post(BARS_LIST_URL, payload, format='json')
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert Bars.objects.count() == 0
