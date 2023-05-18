@@ -49,7 +49,7 @@ class Bars(models.Model):
     )
     longitude = models.DecimalField(
         max_digits=11,
-        decimal_places=9,
+        decimal_places=8,
         validators=[
             MinValueValidator(-180),
             MaxValueValidator(180),
