@@ -27,7 +27,6 @@ def test_create_bars_without_address_fail(db, api_client):
         'title': 'bars title',
         'longitude': Decimal('10.10'),
         'latitude': Decimal('10.10'),
-        'address': ''
     }
     response = api_client.post(BARS_LIST_URL, payload, format='json')
     assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -53,7 +52,7 @@ def test_create_bars_with_blank_values_fail(db, api_client):
         'title': '',
         'longitude': '',
         'latitude': '',
-        'address': ''
+        'address': {}
     }
     response = api_client.post(BARS_LIST_URL, payload, format='json')
     assert response.status_code == status.HTTP_400_BAD_REQUEST
