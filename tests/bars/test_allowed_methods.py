@@ -8,6 +8,7 @@ from tests.user.fixtures import (
 )
 from tests.fixtures import superuser_client, api_client
 
+
 @pytest.mark.parametrize(
     'method_name,response_code',
     [

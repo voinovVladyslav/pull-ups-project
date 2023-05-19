@@ -35,7 +35,9 @@ def create_user(db, django_user_model, user_password, user_email):
 
 
 @pytest.fixture
-def create_superuser(db, django_user_model, superuser_password, superuser_email):
+def create_superuser(
+    db, django_user_model, superuser_password, superuser_email
+):
     def make_user(**kwargs):
         kwargs['password'] = superuser_password
         if 'email' not in kwargs:
