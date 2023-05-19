@@ -28,7 +28,7 @@ class BarsViewSet(viewsets.ModelViewSet):
     queryset = Bars.objects.all()
     serializer_class = BarsSerializer
     pagination_class = StandartResultPagination
-    permission_classes = [IsAdminUser|ReadOnly]
+    permission_classes = [IsAdminUser | ReadOnly]
 
     def get_queryset(self):
         return self.queryset.order_by('-id')

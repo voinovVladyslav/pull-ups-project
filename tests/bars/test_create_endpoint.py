@@ -5,7 +5,9 @@ from rest_framework import status
 from bars.models import Address, Bars
 from tests.fixtures import api_client, superuser_client
 from .fixtures import bars_payload, address_payload
-from tests.user.fixtures import create_superuser, superuser_email, superuser_password
+from tests.user.fixtures import (
+    create_superuser, superuser_email, superuser_password
+)
 from .urls import BARS_LIST_URL
 
 

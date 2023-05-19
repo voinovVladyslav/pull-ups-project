@@ -53,7 +53,9 @@ def test_only_get_allowed_for_list_view_for_authenticated_user(
 def test_only_get_allowed_for_authenticated_user(
         db, authenticated_client, method_name, response_code
 ):
-    response = getattr(authenticated_client, method_name)(get_bars_detail_url(1))
+    response = getattr(
+        authenticated_client, method_name
+    )(get_bars_detail_url(1))
     assert response.status_code == response_code
 
 
