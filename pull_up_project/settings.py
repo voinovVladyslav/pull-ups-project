@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # local
     'user',
     'bars',
+    'tag',
 ]
 
 MIDDLEWARE = [
