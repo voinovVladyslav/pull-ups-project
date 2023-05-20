@@ -8,9 +8,9 @@ from drf_spectacular.utils import (
 )
 
 from utils.pagination import StandartResultPagination
+from utils.permissions import ReadOnly
 from .models import Bars
 from .serializers import BarsSerializer
-from .permissions import ReadOnly
 
 
 @extend_schema_view(
