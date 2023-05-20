@@ -56,6 +56,7 @@ class Bars(models.Model):
         ]
     )
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    tags = models.ManyToManyField('tag.Tag')
 
     def __str__(self):
         return f'Pull bar #{self.id}'
