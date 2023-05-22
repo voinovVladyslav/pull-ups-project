@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import empty
 
 from tag.models import Tag
 from tag.serializers import TagSerializer
@@ -19,7 +20,7 @@ class AddresSerializer(serializers.ModelSerializer):
 
 class BarsSerializer(serializers.ModelSerializer):
     address = AddresSerializer(required=True, read_only=False)
-    tags = TagSerializer(many=True)
+    tags = TagSerializer(many=True, required=False)
 
     class Meta:
         model = Bars
@@ -33,7 +34,7 @@ class BarsSerializer(serializers.ModelSerializer):
         ]
         read_only_fiels = ['id']
 
-    def __init__(self, instance=None, data=None, **kwargs):
+    def __init__(self, instance=None, data=empty, **kwargs):
         super().__init__(instance, data, **kwargs)
         if hasattr(self, 'initial_data'):
             self.tags = self.initial_data.get('tags', [])
@@ -56,13 +57,14 @@ class BarsSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         address_data = validated_data.pop('address')
-        tags_data = validated_data.pop('tags')
-
-        for tag_data in tags_data:
-            Tag.objects.get_or_create(**tag_data)
-
+        validated_data.pop('tags')
         address = Address.objects.create(**address_data)
         bars = Bars.objects.create(address=address, **validated_data)
+
+        for tag_data in self.tags:
+            tag = Tag.objects.get_or_create(**tag_data)
+            bars.tags.add(tag)
+
         return bars
 
     def update(self, instance, validated_data):
