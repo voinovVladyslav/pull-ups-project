@@ -33,7 +33,7 @@ class BarsSerializer(serializers.ModelSerializer):
         ]
         read_only_fiels = ['id']
 
-    def __init__(self, instance, data, **kwargs):
+    def __init__(self, instance=None, data=None, **kwargs):
         super().__init__(instance, data, **kwargs)
         if hasattr(self, 'initial_data'):
             self.tags = self.initial_data.get('tags', [])

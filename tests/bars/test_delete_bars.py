@@ -1,6 +1,5 @@
 import pytest
 from rest_framework import status
-from rest_framework.test import APIClient
 from model_bakery.baker import make
 
 from bars.models import Address, Bars
