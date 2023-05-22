@@ -44,7 +44,8 @@ def test_update_bars_with_empty_values_fail(db, superuser_client):
         'title': '',
         'longitude': '',
         'latitude': '',
-        'address': ''
+        'address': '',
+        'tags': ''
     }
     response = superuser_client.patch(url, payload, format='json')
 

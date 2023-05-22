@@ -22,5 +22,6 @@ def bars_payload(address_payload):
         'title': 'bars title',
         'longitude': Decimal('10.10'),
         'latitude': Decimal('10.10'),
-        'address': address_payload
+        'address': address_payload,
+        'tags': ''
     }
