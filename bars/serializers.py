@@ -37,9 +37,7 @@ class BarsSerializer(serializers.ModelSerializer):
     def __init__(self, instance=None, data=empty, **kwargs):
         super().__init__(instance, data, **kwargs)
         if hasattr(self, 'initial_data'):
-            self.tags = self.initial_data.get('tags', [])
-            if 'tags' in self.initial_data:
-                self.initial_data['tags'] = []
+            self.tags = self.initial_data.pop('tags', [])
 
     def validate_latitude(self, value):
         if value < -90 or value > 90:
