@@ -55,7 +55,6 @@ class BarsSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         address_data = validated_data.pop('address')
-        validated_data.pop('tags')
         address = Address.objects.create(**address_data)
         bars = Bars.objects.create(address=address, **validated_data)
 
