@@ -3,22 +3,13 @@ on: [pull_request]
 jobs:
     tests:
         runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                python-version: ["3.11"]
         steps:
-            - uses: actions/checkout@v3
-            - name: Set up Python ${{ matrix.python-version }}
-              uses: actions/setup-python@v4
-              with:
-                  python-version: ${{ matrix.python-version }}
-            - name: Install dependencies
-              run: |
-                  python -m pip install --upgrade pip
-                  pip install -r requirements.txt
-                  cp .env.example .env
+            - name: Checkout
+              uses: actions/checkout@v2
             - name: Test with pytest
-              run: pytest
+              run: |
+                  cp .env.example .env
+                  docker compose run python pytest
 
     linting:
         runs-on: ubuntu-latest
@@ -36,4 +27,4 @@ jobs:
                   pip install pycodestyle
                   cp .env.example .env
             - name: Lint with pycodestyle
-              run: pycodestyle .
+              run: pycodestyle
