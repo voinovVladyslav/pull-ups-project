@@ -87,12 +87,24 @@ WSGI_APPLICATION = "pull_up_project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+DB_HOST = env.str("POSTGRES_HOST", default='127.0.0.1')
+DB_USER = env.str("POSTGRES_USER")
+DB_PORT = env.str('POSTGRES_PORT', default=5432)
+DB_NAME = env.str("POSTGRES_DB")
+DB_PASSWORD = env.str("POSTGRES_PASSWORD")
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': DB_NAME,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
     }
 }
+
+
 
 
 # Password validation
