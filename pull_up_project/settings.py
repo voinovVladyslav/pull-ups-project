@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+from glob import glob
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -95,7 +96,7 @@ DB_PASSWORD = env.str("POSTGRES_PASSWORD")
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': DB_NAME,
         'HOST': DB_HOST,
         'PORT': DB_PORT,
@@ -104,8 +105,8 @@ DATABASES = {
     }
 }
 
-
-
+GDAL_LIBRARY_PATH=glob('/usr/lib/libgdal.so.*')[0]
+GEOS_LIBRARY_PATH=glob('/usr/lib/libgeos_c.so.*')[0]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
