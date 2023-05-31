@@ -43,9 +43,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django.contrib.gis',
     # third party
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_gis',
     'drf_spectacular',
 
     # local

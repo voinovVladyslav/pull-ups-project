@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.gis.db.models import PointField
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -39,24 +40,9 @@ class Bars(models.Model):
         null=True,
         blank=True,
     )
-    latitude = models.DecimalField(
-        max_digits=10,
-        decimal_places=8,
-        validators=[
-            MinValueValidator(-90),
-            MaxValueValidator(90),
-        ]
-    )
-    longitude = models.DecimalField(
-        max_digits=11,
-        decimal_places=8,
-        validators=[
-            MinValueValidator(-180),
-            MaxValueValidator(180),
-        ]
-    )
+    location = PointField(null=True, blank=True, srid=4326, serialize=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    tags = models.ManyToManyField('tag.Tag')
+    tags = models.ManyToManyField('tag.Tag', blank=True)
 
     def __str__(self):
         return f'Pull bar #{self.id}'

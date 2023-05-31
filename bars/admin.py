@@ -26,7 +26,6 @@ class BarsAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'title',
-        'latitude',
-        'longitude',
+        'location',
         'address',
     )
