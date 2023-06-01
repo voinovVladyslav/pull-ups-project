@@ -1,5 +1,4 @@
 import pytest
-from decimal import Decimal
 from rest_framework import status
 
 from bars.models import Address, Bars
@@ -16,20 +15,21 @@ def test_create_bars_with_address_success(
 ):
     assert Address.objects.count() == 0
     assert Bars.objects.count() == 0
-    response = superuser_client.post(BARS_LIST_URL, bars_payload, format='json')
+    response = superuser_client.post(
+        BARS_LIST_URL, bars_payload, format='json'
+    )
     assert response.status_code == status.HTTP_201_CREATED
     assert Address.objects.count() == 1
     assert Bars.objects.count() == 1
     bars = Bars.objects.first()
     address = Address.objects.first()
     assert bars.address == address
+    assert bars.location is not None
 
 
 def test_create_bars_without_address_fail(db, superuser_client):
     payload = {
         'title': 'bars title',
-        'longitude': Decimal('10.10'),
-        'latitude': Decimal('10.10'),
     }
     response = superuser_client.post(BARS_LIST_URL, payload, format='json')
     assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -41,8 +41,9 @@ def test_create_bars_with_coordinates_out_of_range(
 ):
     payload = {
         'title': 'bars title',
-        'longitude': Decimal('-181.01'),
-        'latitude': Decimal('93.00'),
+        'locations': {
+            'coordinates': [200, 300],
+        },
         'address': address_payload
     }
     response = superuser_client.post(BARS_LIST_URL, payload, format='json')
@@ -53,8 +54,9 @@ def test_create_bars_with_coordinates_out_of_range(
 def test_create_bars_with_blank_values_fail(db, superuser_client):
     payload = {
         'title': '',
-        'longitude': '',
-        'latitude': '',
+        'locations': {
+            'coordinates': [],
+        },
         'address': {}
     }
     response = superuser_client.post(BARS_LIST_URL, payload, format='json')

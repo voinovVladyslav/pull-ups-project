@@ -1,8 +1,4 @@
-from decimal import Decimal
-
 import pytest
-
-from bars.models import Address, Bars
 
 
 @pytest.fixture
@@ -20,8 +16,10 @@ def address_payload():
 def bars_payload(address_payload):
     return {
         'title': 'bars title',
-        'longitude': Decimal('10.10'),
-        'latitude': Decimal('10.10'),
         'address': address_payload,
+        'location': {
+            'type': 'Point',
+            'coordinates': [20.34523, 30.234234],
+        },
         'tags': {}
     }
