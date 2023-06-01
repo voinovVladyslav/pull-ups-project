@@ -40,7 +40,10 @@ class Bars(models.Model):
         null=True,
         blank=True,
     )
-    location = PointField(null=True, blank=True, srid=4326, serialize=True)
+    # x - longitude y - latitude
+    location = PointField(
+        null=True, blank=True, srid=4326, serialize=True, geography=True
+    )
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     tags = models.ManyToManyField('tag.Tag', blank=True)
 

@@ -1,5 +1,4 @@
-import pytest
-from decimal import Decimal
+from django.contrib.gis.geos import Point
 from rest_framework import status
 from model_bakery.baker import make
 
@@ -29,8 +28,6 @@ def test_update_bars_with_address_success(
     bars.refresh_from_db()
 
     assert bars.title == bars_payload['title']
-    assert bars.latitude == bars_payload['latitude']
-    assert bars.longitude == bars_payload['longitude']
     assert bars.address == address
 
 
@@ -42,8 +39,7 @@ def test_update_bars_with_empty_values_fail(db, superuser_client):
     url = get_bars_detail_url(bars.id)
     payload = {
         'title': '',
-        'longitude': '',
-        'latitude': '',
+        'location': None,
         'address': '',
         'tags': ''
     }
@@ -79,21 +75,8 @@ def test_partial_update_address_only_success(db, superuser_client):
     assert bars.address.postal_code == payload['address']['postal_code']
 
 
-@pytest.mark.parametrize(
-    'object_name, value',
-    [
-        ('title', 'Updated Country', ),
-        ('longitude', Decimal('110.00')),
-        ('latitude', Decimal('60.00')),
-    ],
-    ids=[
-        'title UPDATE',
-        'longitude UPDATE',
-        'latitude UPDATE',
-    ]
-)
-def test_partial_update_bars_only_success(
-    db, superuser_client, object_name, value
+def test_partial_update_location_only_success(
+    db, superuser_client
 ):
     address = make(Address)
     bars = make(Bars, address=address)
@@ -101,28 +84,36 @@ def test_partial_update_bars_only_success(
     assert Bars.objects.count() == 1
 
     url = get_bars_detail_url(bars.id)
+    x = 30.234
+    y = 20.456
     payload = {
-        object_name: value
+        'location': {
+            'type': 'Point',
+            'coordinates': [x, y],
+        },
     }
     response = superuser_client.patch(url, payload, format='json')
-
     assert response.status_code == status.HTTP_200_OK
 
     bars.refresh_from_db()
-
-    assert getattr(bars, object_name) == payload[object_name]
+    assert bars.location.x == x
+    assert bars.location.y == y
 
 
 def test_update_with_coordinates_out_of_range_fail(db, superuser_client):
     address = make(Address)
-    bars = make(Bars, address=address)
+    bars = make(Bars, address=address, location=Point(0, 0))
 
     assert Bars.objects.count() == 1
 
     url = get_bars_detail_url(bars.id)
+    x = 300
+    y = 200
     payload = {
-        'longitude': Decimal('-190.00'),
-        'latitude': Decimal('95.00'),
+        'location': {
+            'type': 'Point',
+            'coordinates': [x, y],
+        },
     }
     response = superuser_client.patch(url, payload, format='json')
 
@@ -130,5 +121,5 @@ def test_update_with_coordinates_out_of_range_fail(db, superuser_client):
 
     bars.refresh_from_db()
 
-    assert bars.longitude != payload['longitude']
-    assert bars.latitude != payload['latitude']
+    assert bars.location.x != x
+    assert bars.location.y != y
