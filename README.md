@@ -8,43 +8,34 @@
 cp .env.example .env
 ```
 
--   make virtual environment
+-   run docker compose
 
 ```bash
-python -m venv venv
+docker compose up
 ```
 
--   install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
--   make migrations
-
-```bash
-python manage.py migrate
-```
-
--   run server
-
-```bash
-python manage.py runserver
-```
+-   server will be automatically up
 
 ### Optional Steps
 
 -   create superuser
 
 ```bash
+# inside python docker container
 python manage.py createsuperuser
 ```
 
 -   add your dependencies
 
 ```bash
-# make sure virtual environment is on
+# inside python docker container
 pip install <package-name>
 # add newly installed package to requirements
 pip freeze > requirements.txt
+```
+
+-   rebuild container
+
+```bash
+docker compose build
 ```
