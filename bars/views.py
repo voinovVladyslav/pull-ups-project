@@ -1,3 +1,4 @@
+import logging
 from decimal import Decimal
 
 from django.contrib.gis.geos import Point
@@ -15,6 +16,9 @@ from utils.pagination import StandartResultPagination
 from utils.permissions import ReadOnly
 from .models import Bars
 from .serializers import BarsSerializer
+
+
+logger = logging.getLogger('db')
 
 
 def get_ref_point_from_query_data(value: str) -> Point | None:
@@ -59,3 +63,18 @@ class BarsViewSet(viewsets.ModelViewSet):
                     "distance"
                 )
         return queryset.order_by('-id')
+
+    def create(self, request, *args, **kwargs):
+        logger.info(
+            'Create bars',
+            extra=dict(type='bars_create', user=request.user)
+        )
+        return super().create(request, *args, **kwargs)
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        logger.info(
+            'Deleted bars: id=%s',
+            pk,
+            extra=dict(type='bars_delete', user=request.user)
+        )
+        return super().destroy(request, *args, **kwargs)
