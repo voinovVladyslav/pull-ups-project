@@ -54,11 +54,13 @@ INSTALLED_APPS = [
     'rest_framework_gis',
     'drf_spectacular',
     'corsheaders',
+    'admin_auto_filters',
 
     # local
     'user',
     'bars',
     'tag',
+    'logs',
 ]
 
 MIDDLEWARE = [
@@ -92,6 +94,42 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "pull_up_project.wsgi.application"
 
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'db': {
+            'level': 'DEBUG',
+            'class': 'logs.db_log_handler.DatabaseLogHandler'
+        },
+    },
+    'loggers': {
+        'db': {
+            'handlers': ['db'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
