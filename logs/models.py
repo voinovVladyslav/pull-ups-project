@@ -51,6 +51,12 @@ class LogRecord(models.Model):
         blank=True,
         null=True,
     )
+    bar = models.ForeignKey(
+        'bars.Bars',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
 
     def __str__(self) -> str:
         return self.message

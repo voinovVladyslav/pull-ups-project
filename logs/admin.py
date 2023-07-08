@@ -17,6 +17,7 @@ class LogRecordAdmin(admin.ModelAdmin):
         'level',
         'type',
         'msg',
+        'bar',
         'user',
     )
     readonly_fields = (
@@ -25,6 +26,7 @@ class LogRecordAdmin(admin.ModelAdmin):
         'type',
         'message',
         'trace',
+        'bar',
         'user',
     )
     list_filter = (

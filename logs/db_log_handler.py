@@ -6,6 +6,7 @@ class DatabaseLogHandler(logging.Handler):
     def emit(self, record):
         from .models import LogRecordLevel, LogRecord, LogRecordType
         from user.models import User
+        from bars.models import Bars
         log_record = LogRecord()
 
         if hasattr(record, "type"):
@@ -29,6 +30,16 @@ class DatabaseLogHandler(logging.Handler):
 
             if user:
                 log_record.user = user
+
+        if hasattr(record, 'bar'):
+            if isinstance(record.bar, Bars):
+                bar = record.bar
+            else:
+                bar = Bars.objects.filter(
+                    id=record.bar
+                ).first()
+            if bar:
+                log_record.bar = bar
 
         log_record.message = record.getMessage()
 
