@@ -59,7 +59,7 @@ def test_log_record_created_if_bars_updated(
     assert LogRecord.objects.count() == 1
     log = LogRecord.objects.first()
     assert log.user == user
-    assert log.bars == bars
+    assert log.bar == bars
 
 
 def test_log_record_not_created_if_failed_to_update_bars(
@@ -73,7 +73,8 @@ def test_log_record_not_created_if_failed_to_update_bars(
     assert LogRecord.objects.count() == 0
 
     url = get_bars_detail_url(bars.id)
-    response = superuser_client.patch(url, {'test': 'test'}, format='json')
+    response = superuser_client.patch(url, {'location': 'test'}, format='json')
+    assert response.status_code != 200
     assert Bars.objects.count() == 1
     assert LogRecord.objects.count() == 0
 
@@ -96,7 +97,7 @@ def test_log_record_created_if_bars_was_deleted(
     assert log.user == user
 
 
-def test_log_record_not_craeted_if_failed_to_delete_bars(
+def test_log_record_not_created_if_failed_to_delete_bars(
     db, superuser_client, superuser_email,
 ):
     address = make(Address)

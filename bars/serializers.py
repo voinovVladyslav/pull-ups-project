@@ -1,3 +1,6 @@
+import logging
+
+from django.forms.models import model_to_dict
 from rest_framework import serializers
 from rest_framework.fields import empty
 from rest_framework_gis.serializers import GeoModelSerializer
@@ -6,6 +9,9 @@ from rest_framework_gis.fields import GeometryField
 from tag.models import Tag
 from tag.serializers import TagSerializer
 from .models import Address, Bars
+
+
+logger = logging.getLogger('db')
 
 
 class AddresSerializer(serializers.ModelSerializer):
@@ -63,6 +69,16 @@ class BarsSerializer(GeoModelSerializer):
             tag = Tag.objects.get_or_create(**tag_data)
             bars.tags.add(tag)
 
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+
+        logger.info(
+            'Created bars: %s',
+            model_to_dict(bars),
+            extra=dict(type='bars_create', bar=bars, user=user)
+        )
         return bars
 
     def update(self, instance, validated_data):
@@ -88,4 +104,8 @@ class BarsSerializer(GeoModelSerializer):
             instance.tags.add(obj)
 
         instance.save()
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
         return instance

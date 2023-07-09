@@ -1,6 +1,7 @@
 import logging
 from decimal import Decimal
 
+from django.forms.models import model_to_dict
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from rest_framework import viewsets
@@ -64,17 +65,18 @@ class BarsViewSet(viewsets.ModelViewSet):
                 )
         return queryset.order_by('-id')
 
-    def create(self, request, *args, **kwargs):
+    def perform_destroy(self, instance):
+        instance.delete()
         logger.info(
-            'Create bars',
-            extra=dict(type='bars_create', user=request.user)
+            'Deleted bars: %s',
+            model_to_dict(instance),
+            extra=dict(type='bars_delete', user=self.request.user)
         )
-        return super().create(request, *args, **kwargs)
 
-    def destroy(self, request, pk=None, *args, **kwargs):
+    def perform_update(self, serializer):
+        bars = serializer.save()
         logger.info(
-            'Deleted bars: id=%s',
-            pk,
-            extra=dict(type='bars_delete', user=request.user)
+            'Updated bars: %s',
+            model_to_dict(bars),
+            extra=dict(type='bars_update', bar=bars, user=self.request.user)
         )
-        return super().destroy(request, *args, **kwargs)
