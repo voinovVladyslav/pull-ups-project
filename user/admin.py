@@ -8,14 +8,13 @@ from user.models import User
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     ordering = ['id']
-    list_display = ['email', 'username', 'last_login', 'created_at']
+    list_display = ['email', 'is_staff', 'last_login', 'created_at']
     fieldsets = (
         (
             None,
             {
                 'fields': (
                     'email',
-                    'username',
                     'password',
                 )
             }
@@ -50,7 +49,6 @@ class UserAdmin(BaseUserAdmin):
                     'email',
                     'password1',
                     'password2',
-                    'username',
                     'is_active',
                     'is_staff',
                     'is_superuser',
