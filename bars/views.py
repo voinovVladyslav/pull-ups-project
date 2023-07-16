@@ -5,7 +5,9 @@ from django.forms.models import model_to_dict
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from rest_framework import viewsets
-from rest_framework.permissions import IsAdminUser
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
@@ -80,3 +82,25 @@ class BarsViewSet(viewsets.ModelViewSet):
             model_to_dict(bars),
             extra=dict(type='bars_update', bar=bars, user=self.request.user)
         )
+
+    @action(
+        methods=['GET'], detail=False,
+        url_name='favorites', url_path='favorites',
+        permission_classes=[IsAuthenticated]
+    )
+    def list_favorites(self, request, *args, **kwargs):
+        return Response(status=200)
+
+    @action(
+        methods=['POST'], detail=False,
+        url_name='favorites-add', url_path='favorites/add'
+    )
+    def favorite_add(self, request, *args, **kwargs):
+        return Response(status=200)
+
+    @action(
+        methods=['POST'], detail=False,
+        url_name='favorites-remove', url_path='favorites/remove'
+    )
+    def favorite_remove(self, request, *args, **kwargs):
+        return Response(status=200)
