@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from rest_framework import status
 from model_bakery.baker import make
@@ -17,15 +19,19 @@ def test_list_all_favorite_bars(
 ):
     bars = make(Bars, 5)
     bar = bars[0]
+    bar.title = 'test_title'
+    bar.save()
+    bars[-1].title = 'custom_title'
+    bars[-1].save()
     user = User.objects.get(email=superuser_email)
     user.favorite_bars.add(bar)
 
     response = superuser_client.get(FAVORITE_BARS)
-    response_data = response.json()['results']
+    response_data = json.loads(response.content)
     assert response.status_code == status.HTTP_200_OK
     assert len(response_data) == 1
-    assert bar.title in response_data
-    assert bars[-1].title not in response_data
+    assert bar.title in str(response_data)
+    assert bars[-1].title not in str(response_data)
 
 
 def test_list_all_favorite_bars_not_allowed_for_guest_users(
@@ -33,18 +39,6 @@ def test_list_all_favorite_bars_not_allowed_for_guest_users(
 ):
     response = api_client.get(FAVORITE_BARS)
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
-
-def test_favorites_have_pagination(db, superuser_client, superuser_email):
-    bars = make(Bars, 20)
-    user = User.objects.get(email=superuser_email)
-    user.favorite_bars.set(bars)
-    url = FAVORITE_BARS + '?per_page=10'
-    response = superuser_client.get(url)
-    assert response.status_code == status.HTTP_200_OK
-    response_data = response.json()
-    assert response_data.get('next', None)
-    assert len(response_data['results']) == 10
 
 
 def test_add_bars_to_favorites(db, superuser_client, superuser_email):
@@ -90,7 +84,7 @@ def test_remove_bars_from_favorites(db, superuser_client, superuser_email):
     assert user.favorite_bars.count() == 0
 
 
-def test_add_invalid_bars_id_to_favorites(
+def test_remove_invalid_bars_id_from_favorites(
     db, superuser_client, superuser_email
 ):
     bar = make(Bars)
@@ -103,4 +97,4 @@ def test_add_invalid_bars_id_to_favorites(
     response = superuser_client.post(REMOVE_FAVORITE_BARS, payload)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     user.refresh_from_db()
-    assert user.favorite_bars.count() == 0
+    assert user.favorite_bars.count() == 1

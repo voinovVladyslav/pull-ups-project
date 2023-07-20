@@ -8,6 +8,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.exceptions import ValidationError
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
@@ -89,18 +90,38 @@ class BarsViewSet(viewsets.ModelViewSet):
         permission_classes=[IsAuthenticated]
     )
     def list_favorites(self, request, *args, **kwargs):
-        return Response(status=200)
+        queryset = request.user.favorite_bars.all().order_by('-id')
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     @action(
         methods=['POST'], detail=False,
-        url_name='favorites-add', url_path='favorites/add'
+        url_name='favorites-add', url_path='favorites/add',
+        permission_classes=[IsAuthenticated]
     )
     def favorite_add(self, request, *args, **kwargs):
-        return Response(status=200)
+        bar_id = request.data.get('bar_id', None)
+        if not bar_id:
+            raise ValidationError({'bar_id': 'this field is required'})
+        try:
+            bar = Bars.objects.get(id=bar_id)
+            request.user.favorite_bars.add(bar)
+            return Response(status=200)
+        except Exception as e:
+            raise ValidationError({'bar_id': 'Object does not exists'})
 
     @action(
         methods=['POST'], detail=False,
-        url_name='favorites-remove', url_path='favorites/remove'
+        url_name='favorites-remove', url_path='favorites/remove',
+        permission_classes=[IsAuthenticated]
     )
     def favorite_remove(self, request, *args, **kwargs):
-        return Response(status=200)
+        bar_id = request.data.get('bar_id', None)
+        if not bar_id:
+            raise ValidationError({'bar_id': 'this field is required'})
+        try:
+            bar = Bars.objects.get(id=bar_id)
+            request.user.favorite_bars.remove(bar)
+            return Response(status=200)
+        except Exception as e:
+            raise ValidationError({'bar_id': 'Object does not exists'})
