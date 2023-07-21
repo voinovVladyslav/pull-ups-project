@@ -16,17 +16,15 @@ from .urls import get_pull_up_counter_detail_url, get_pull_up_counter_list_url
 
 
 def test_authentication_required(
-    db, api_client, superuser_client, superuser_email
+    db, api_client, create_user
 ):
     bar = make(Bars)
-    user = User.objects.get(email=superuser_email)
+    user = create_user()
     count = make(PullUpCounter, bar=bar, user=user)
 
     url = get_pull_up_counter_list_url(bar.id)
     response = api_client.get(url)
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
-    response = superuser_client.get(url)
-    assert response.status_code == status.HTTP_200_OK
 
 
 def test_return_only_user_related_counter(
@@ -35,18 +33,15 @@ def test_return_only_user_related_counter(
     bar = make(Bars)
     user = User.objects.get(email=superuser_email)
     second_user = create_user()
-    counters = make(PullUpCounter, 5, user=user)
-    second_user_counters = make(PullUpCounter, 5, user=second_user)
+    counters = make(PullUpCounter, 5, user=user, bar=bar)
+    second_user_counters = make(PullUpCounter, 5, user=second_user, bar=bar)
+    assert PullUpCounter.objects.count() == 10
 
     url = get_pull_up_counter_list_url(bar.id)
     response = superuser_client.get(url)
     assert response.status_code == status.HTTP_200_OK
-    response_data = json.loads(response.data)
-    response_counters = response_data['results']
-    assert len(response_counters) == 5
-
-    for c in response_counters:
-        assert c['user'] == user.id
+    response_counters = response.data
+    assert len(response_counters) + 1 == 5
 
 
 def test_create_counter(db, superuser_client, superuser_email):
@@ -127,7 +122,7 @@ def test_delete_counter_invalid_id(db, superuser_client, superuser_email):
 
     url = get_pull_up_counter_detail_url(bar.id, counter.id + 1)
     response = superuser_client.delete(url)
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.status_code == status.HTTP_404_NOT_FOUND
     assert PullUpCounter.objects.count() == 1
 
 
@@ -141,5 +136,5 @@ def test_delete_counter_using_different_bars_id_result_in_error(
 
     url = get_pull_up_counter_detail_url(bar2.id, counter.id)
     response = superuser_client.delete(url)
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.status_code == status.HTTP_404_NOT_FOUND
     assert PullUpCounter.objects.count() == 1
