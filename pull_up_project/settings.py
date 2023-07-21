@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'bars',
     'tag',
     'logs',
+    'counter',
 ]
 
 MIDDLEWARE = [
