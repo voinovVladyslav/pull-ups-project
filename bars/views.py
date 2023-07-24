@@ -57,6 +57,13 @@ class BarsViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
+
+        if hasattr(self.request.user, 'favorite_bars'):
+            favorite_ids = [
+                bar.id for bar in self.request.user.favorite_bars.all()
+            ]
+            queryset = queryset.exclude(id__in=favorite_ids)
+
         ref_point_raw = self.request.query_params.get('ref_point')
         if ref_point_raw:
             ref_point = get_ref_point_from_query_data(ref_point_raw)
