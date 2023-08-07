@@ -44,7 +44,12 @@ class Bars(models.Model):
     location = PointField(
         null=True, blank=True, srid=4326, serialize=True, geography=True
     )
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    address = models.ForeignKey(
+        Address,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     tags = models.ManyToManyField('tag.Tag', blank=True)
 
     def __str__(self):
