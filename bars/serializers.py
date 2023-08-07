@@ -27,7 +27,7 @@ class AddresSerializer(serializers.ModelSerializer):
 
 
 class BarsSerializer(GeoModelSerializer):
-    address = AddresSerializer(required=True, read_only=False)
+    address = AddresSerializer(required=False, read_only=False)
     tags = TagSerializer(many=True, required=False)
     location = GeometryField()
 
@@ -61,9 +61,11 @@ class BarsSerializer(GeoModelSerializer):
         return value
 
     def create(self, validated_data):
-        address_data = validated_data.pop('address')
-        address = Address.objects.create(**address_data)
-        bars = Bars.objects.create(address=address, **validated_data)
+        address_data = validated_data.get('address', None)
+        bars = Bars.objects.create(**validated_data)
+        if address_data:
+            address = Address.objects.create(**address_data)
+            bars.address = address
 
         for tag_data in self.tags:
             tag = Tag.objects.get_or_create(**tag_data)
