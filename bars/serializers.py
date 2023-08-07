@@ -27,7 +27,6 @@ class AddresSerializer(serializers.ModelSerializer):
 
 
 class BarsSerializer(GeoModelSerializer):
-    address = AddresSerializer(required=False, read_only=False)
     tags = TagSerializer(many=True, required=False)
     location = GeometryField()
 
@@ -38,7 +37,6 @@ class BarsSerializer(GeoModelSerializer):
             'id',
             'title',
             'location',
-            'address',
             'tags',
         ]
         read_only_fiels = ['id']
@@ -61,12 +59,7 @@ class BarsSerializer(GeoModelSerializer):
         return value
 
     def create(self, validated_data):
-        address_data = validated_data.get('address', None)
         bars = Bars.objects.create(**validated_data)
-        if address_data:
-            address = Address.objects.create(**address_data)
-            bars.address = address
-
         for tag_data in self.tags:
             tag = Tag.objects.get_or_create(**tag_data)
             bars.tags.add(tag)
@@ -84,12 +77,7 @@ class BarsSerializer(GeoModelSerializer):
         return bars
 
     def update(self, instance, validated_data):
-        address_data = validated_data.pop('address', {})
         new_tag_names = [tag_data['name'] for tag_data in self.tags]
-
-        for key, value in address_data.items():
-            setattr(instance.address, key, value)
-        instance.address.save()
 
         for key, value in validated_data.items():
             if key == 'tags':
@@ -106,8 +94,4 @@ class BarsSerializer(GeoModelSerializer):
             instance.tags.add(obj)
 
         instance.save()
-        user = None
-        request = self.context.get("request")
-        if request and hasattr(request, "user"):
-            user = request.user
         return instance
