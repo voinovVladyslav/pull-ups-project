@@ -27,7 +27,7 @@ def test_list_all_favorite_bars(
     user.favorite_bars.add(bar)
 
     response = superuser_client.get(FAVORITE_BARS)
-    response_data = json.loads(response.content)
+    response_data = json.loads(response.content)['results']
     assert response.status_code == status.HTTP_200_OK
     assert len(response_data) == 1
     assert bar.title in str(response_data)
