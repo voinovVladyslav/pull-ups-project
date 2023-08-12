@@ -29,6 +29,7 @@ class AddresSerializer(serializers.ModelSerializer):
 class BarsSerializer(GeoModelSerializer):
     tags = TagSerializer(many=True, required=False)
     location = GeometryField()
+    is_favorite = serializers.BooleanField(required=False, read_only=True)
 
     class Meta:
         model = Bars
@@ -38,6 +39,7 @@ class BarsSerializer(GeoModelSerializer):
             'title',
             'location',
             'tags',
+            'is_favorite',
         ]
         read_only_fiels = ['id']
 

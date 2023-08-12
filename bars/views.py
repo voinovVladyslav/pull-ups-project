@@ -2,6 +2,7 @@ import logging
 from decimal import Decimal
 
 from django.forms.models import model_to_dict
+from django.db.models import OuterRef, Exists, F
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from rest_framework import viewsets
@@ -18,6 +19,7 @@ from drf_spectacular.utils import (
 
 from utils.pagination import StandartResultPagination
 from utils.permissions import ReadOnly
+from user.models import User
 from .models import Bars
 from .serializers import BarsSerializer
 
@@ -58,11 +60,13 @@ class BarsViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = self.queryset
 
-        if hasattr(self.request.user, 'favorite_bars'):
-            favorite_ids = [
-                bar.id for bar in self.request.user.favorite_bars.all()
-            ]
-            queryset = queryset.exclude(id__in=favorite_ids)
+        if self.request.user.is_authenticated:
+            queryset = queryset.annotate(
+                is_favorite=Exists(User.favorite_bars.through.objects.filter(
+                    user_id=self.request.user.id,
+                    bars_id=OuterRef('pk'),
+                ))
+            )
 
         ref_point_raw = self.request.query_params.get('ref_point')
         if ref_point_raw:
