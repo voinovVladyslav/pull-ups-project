@@ -1,4 +1,4 @@
-name: Deploy no production
+name: Deploy to production
 on: [workflow_dispatch]
 jobs:
     deploy:
@@ -10,9 +10,9 @@ jobs:
             - name: Set up SSH key
               run: |
                   mkdir -p ~/.ssh
-                  echo "${{ secrets.SSH_SECRET_KEY }}" > ~/.ssh/id_ed25519
-                  chmod 600 ~/.ssh/id_ed25519
-                  ssh-keyscan github.com >> ~/.ssh/known_hosts
+                  echo "${{ secrets.SSH_DEPLOY_KEY }}" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
             - name: Deploy to server
               run: |
                   echo "Starting deployment..."
