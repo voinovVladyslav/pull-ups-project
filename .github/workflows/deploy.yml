@@ -10,13 +10,13 @@ jobs:
             - name: Set up SSH key
               run: |
                   mkdir -p ~/.ssh
-                  echo "${{ secrets.SSH_DEPLOY_KEY }}" > ~/.ssh/id_rsa
+                  echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
                   chmod 600 ~/.ssh/id_rsa
                   ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
             - name: Deploy to server
               run: |
                   echo "Starting deployment..."
-                  ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_DOMAIN }} "cd /opt/pull_up_project/backend &&
+                  ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_DOMAIN }} "cd /opt/pull_up_project/backend &&
                       source /opt/pull_up_project/backend/venv/bin/activate &&
                       cp .env.production .env &&
                       git fetch &&
