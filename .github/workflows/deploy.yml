@@ -9,11 +9,10 @@ jobs:
               uses: actions/checkout@v2
             - name: Set up SSH key
               run: |
-                  "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
-                  "eval $(ssh-agent -s)"
-                  'ssh-add <(echo "$SSH_PRIVATE_KEY")'
-                  "mkdir -p ~/.ssh"
-                  '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+                  mkdir -p ~/.ssh
+                  echo "${{ secrets.SSH_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+                  chmod 600 ~/.ssh/id_ed25519
+                  ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
             - name: Deploy to server
               run: |
                   echo "Starting deployment..."
