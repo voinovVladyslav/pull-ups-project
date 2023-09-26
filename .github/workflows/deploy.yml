@@ -1,0 +1,37 @@
+name: Deploy no production
+on: [workflow_dispatch]
+jobs:
+    deploy:
+        name: Deploy
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout code
+            uses: actions/checkout@v3
+        - name: Set up SSH key
+            run:
+                "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+                "eval $(ssh-agent -s)"
+                'ssh-add <(echo "$SSH_PRIVATE_KEY")'
+                "mkdir -p ~/.ssh"
+                '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+        - name: Deploy to server
+            run: |
+                echo "Starting deployment..."
+                ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no {{ secrets.SERVER_USER }}@{{ secrets.SERVER_DOMAIN }} "cd /opt/pull_up_project/backend &&
+                    source /opt/pull_up_project/backend/venv/bin/activate &&
+                    cp .env.production .env &&
+                    git fetch &&
+                    git checkout $GITHUB_SHA &&
+                    git pull origin $GITHUB_REF_NAME &&
+                    pip install -r requirements.txt &&
+                    supervisorctl stop all &&
+                    python manage.py migrate &&
+                    python manage.py collectstatic --noinput &&
+                    cp etc/nginx/sites-available/* /etc/nginx/sites-available/. &&
+                    ln -sf /etc/nginx/sites-available/backend.conf /etc/nginx/sites-enabled/ &&
+                    cp etc/supervisor/conf.d/* /etc/supervisor/conf.d/. &&
+                    supervisorctl reread &&
+                    supervisorctl update &&
+                    supervisorctl start all &&
+                    service nginx restart"
+                echo "Deployment completed."
