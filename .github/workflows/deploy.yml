@@ -20,10 +20,10 @@ jobs:
                   echo "Starting deployment..."
                   ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_DOMAIN }} "cd /opt/pull_up_project/backend &&
                       source /opt/pull_up_project/backend/venv/bin/activate &&
-                      cp .env.production .env &&
                       git fetch &&
                       git switch $BRANCH_NAME &&
                       git pull origin $BRANCH_NAME &&
+                      cp .env.production .env &&
                       pip install -r requirements.txt &&
                       supervisorctl stop all &&
                       python manage.py migrate &&
