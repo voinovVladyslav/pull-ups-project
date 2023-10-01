@@ -6,12 +6,12 @@ ACHIEVEMENTS = [
     },
     {
         'id': 'pullup10',
-        'title': 'Pull up amator',
+        'title': 'Pull up amateur',
         'description': 'Do 10 pull ups',
     },
     {
         'id': 'pullup15',
-        'title': 'Calistenics enjoyer',
+        'title': 'Calisthenics enjoyer',
         'description': 'Do 15 pull ups',
     },
     {
