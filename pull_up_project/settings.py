@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'tag',
     'logs',
     'counter',
+    'achievements',
 ]
 
 MIDDLEWARE = [
