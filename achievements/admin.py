@@ -1,5 +1,6 @@
 from django.contrib import admin
 from admin_auto_filters.filters import AutocompleteFilter
+from django.http.request import HttpRequest
 
 from .models import Achievement
 
@@ -27,3 +28,9 @@ class AchievementModelAdmin(admin.ModelAdmin):
         'done',
         UserFilter,
     )
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
