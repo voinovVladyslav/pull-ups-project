@@ -3,6 +3,8 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from django.utils.translation import gettext as _
 
+from achievements.helpers.upsert import upsert_achievements
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +16,9 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        return get_user_model().objects.create_user(**validated_data)
+        user = get_user_model().objects.create_user(**validated_data)
+        upsert_achievements(user)
+        return user
 
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
