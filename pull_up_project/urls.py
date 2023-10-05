@@ -22,4 +22,5 @@ urlpatterns = [
     path('api/', include('user.urls')),
     path('api/', include('bars.urls')),
     path('api/', include('tag.urls')),
+    path('api/', include('achievements.urls')),
 ]
