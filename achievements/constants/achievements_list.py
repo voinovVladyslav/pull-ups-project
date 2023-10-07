@@ -1,4 +1,4 @@
-ACHIEVEMENTS = [
+PULLUP_ACHIEVEMENTS = [
     {
         'id': 'pullup5',
         'title': 'Pull up rookie',
@@ -49,61 +49,9 @@ ACHIEVEMENTS = [
         'title': 'David Goggins',
         'description': 'Do 50 pull ups',
     },
-    {
-        'id': 'diff3',
-        'title': 'Easy walk',
-        'description': 'Do pull ups in 3 different places in one day',
-    },
-    {
-        'id': 'diff5',
-        'title': 'Traveler',
-        'description': 'Do pull ups in 5 different places in one day',
-    },
-    {
-        'id': 'diff7',
-        'title': 'Where I am?',
-        'description': 'Do pull ups in 7 different places in one day',
-    },
-    {
-        'id': 'diff10',
-        'title': 'Christopher Columbus',
-        'description': 'Do pull ups in 10 different places in one day',
-    },
-    {
-        'id': 'row7',
-        'title': 'No more rest days',
-        'description': 'Do pull ups 7 days in a row',
-    },
-    {
-        'id': 'row16',
-        'title': '2 - 3 weeks',
-        'description': 'Do pull ups 15 days in a row',
-    },
-    {
-        'id': 'row30',
-        'title': 'Finally, inner peace',
-        'description': 'Do pull ups 30 days in a row',
-    },
-    {
-        'id': 'totaldiff5',
-        'title': 'Know your surroundings',
-        'description': 'Do pull ups in 5 different places total',
-    },
-    {
-        'id': 'totaldiff25',
-        'title': 'Does my area has that much?',
-        'description': 'Do pull ups in 25 different places total',
-    },
-    {
-        'id': 'totaldiff50',
-        'title': 'Nomad',
-        'description': 'Do pull ups in 50 different places total',
-    },
-    {
-        'id': 'totaldiff100',
-        'title': 'Mr. Worldwide',
-        'description': 'Do pull ups in 100 different places total',
-    },
+]
+
+TOTAL_PULL_UP_ACHIEVEMENTS = [
     {
         'id': 'totalpullup100',
         'title': '10 by 10',
@@ -135,3 +83,75 @@ ACHIEVEMENTS = [
         'description': 'Total of 15 000 pull ups',
     },
 ]
+
+DIFFERENT_BARS_IN_ONE_DAY = [
+    {
+        'id': 'diff3',
+        'title': 'Easy walk',
+        'description': 'Do pull ups in 3 different places in one day',
+    },
+    {
+        'id': 'diff5',
+        'title': 'Traveler',
+        'description': 'Do pull ups in 5 different places in one day',
+    },
+    {
+        'id': 'diff7',
+        'title': 'Where I am?',
+        'description': 'Do pull ups in 7 different places in one day',
+    },
+    {
+        'id': 'diff10',
+        'title': 'Christopher Columbus',
+        'description': 'Do pull ups in 10 different places in one day',
+    },
+]
+
+TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS = [
+    {
+        'id': 'totaldiff5',
+        'title': 'Know your surroundings',
+        'description': 'Do pull ups in 5 different places total',
+    },
+    {
+        'id': 'totaldiff25',
+        'title': 'Does my area has that much?',
+        'description': 'Do pull ups in 25 different places total',
+    },
+    {
+        'id': 'totaldiff50',
+        'title': 'Nomad',
+        'description': 'Do pull ups in 50 different places total',
+    },
+    {
+        'id': 'totaldiff100',
+        'title': 'Mr. Worldwide',
+        'description': 'Do pull ups in 100 different places total',
+    },
+]
+
+PULL_UP_DAY_STREAK_ACHIEVEMENTS = [
+    {
+        'id': 'row7',
+        'title': 'No more rest days',
+        'description': 'Do pull ups 7 days in a row',
+    },
+    {
+        'id': 'row16',
+        'title': '2 - 3 weeks',
+        'description': 'Do pull ups 15 days in a row',
+    },
+    {
+        'id': 'row30',
+        'title': 'Finally, inner peace',
+        'description': 'Do pull ups 30 days in a row',
+    },
+]
+
+ACHIEVEMENTS = (
+    PULLUP_ACHIEVEMENTS +
+    TOTAL_PULL_UP_ACHIEVEMENTS +
+    TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS +
+    DIFFERENT_BARS_IN_ONE_DAY +
+    PULL_UP_DAY_STREAK_ACHIEVEMENTS
+)
