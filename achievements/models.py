@@ -1,6 +1,16 @@
 from django.db import models
 
 
+class AchievementType(models.Model):
+    name = models.CharField(
+        max_length=64,
+        unique=True,
+    )
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Achievement(models.Model):
     title = models.CharField(
         max_length=255,
@@ -13,7 +23,11 @@ class Achievement(models.Model):
         blank=True,
         null=True,
     )
-
+    threshold = models.PositiveIntegerField()
+    type = models.ForeignKey(
+        AchievementType,
+        on_delete=models.CASCADE,
+    )
     user = models.ForeignKey(
         'user.User',
         on_delete=models.CASCADE,
