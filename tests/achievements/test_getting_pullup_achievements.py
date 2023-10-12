@@ -24,7 +24,7 @@ def test_getting_achievement_for_5_pullups(
     bar = make(Bars)
 
     for achievement in PULLUP_ACHIEVEMENTS:
-        if achievement['id'] == 'pullup5':
+        if achievement['type'] == 'pullup' and achievement['threshold'] == 5:
             achievement_title = achievement['title']
 
     payload = {
@@ -33,8 +33,8 @@ def test_getting_achievement_for_5_pullups(
 
     url = get_pull_up_counter_list_url(bar.id)
     response = authenticated_client.post(url, payload)
-    assert response.status_code == status.HTTP_200_OK
-    done_achievement = user.achievements.filter(title=achievement_title)
+    assert response.status_code == status.HTTP_201_CREATED
+    done_achievement = user.achievements.get(title=achievement_title)
     assert done_achievement.done is True
 
 
@@ -71,3 +71,27 @@ def test_getting_lower_achievements_if_higher_achieved(
     assert response.status_code == status.HTTP_201_CREATED
     done_achievements = user.achievements.filter(done=True)
     assert done_achievements.count() == done
+
+
+def test_not_getting_same_achievement_twice(
+    db, authenticated_client: APIClient, user_email
+):
+    user = User.objects.get(email=user_email)
+    upsert_achievements(user, achievements=PULLUP_ACHIEVEMENTS)
+    bar = make(Bars)
+
+    payload = {
+        'reps': 6
+    }
+
+    url = get_pull_up_counter_list_url(bar.id)
+    response = authenticated_client.post(url, payload)
+    assert response.status_code == status.HTTP_201_CREATED
+    done_achievements = user.achievements.filter(done=True)
+    assert done_achievements.count() == 1
+
+    url = get_pull_up_counter_list_url(bar.id)
+    response = authenticated_client.post(url, payload)
+    assert response.status_code == status.HTTP_201_CREATED
+    done_achievements = user.achievements.filter(done=True)
+    assert done_achievements.count() == 1
