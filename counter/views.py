@@ -10,6 +10,7 @@ from drf_spectacular.utils import (
 
 from utils.pagination import StandartResultPagination
 from bars.models import Bars
+from achievements.helpers.check import check_user_achievements
 from .models import PullUpCounter
 from .serializers import PullUpCounterSerializer
 
@@ -41,3 +42,4 @@ class PullUpCounterViewSet(ModelViewSet):
         if not bar:
             raise ValidationError({'bar_id': 'bars does not exists'})
         serializer.save(user=self.request.user, bar=bar)
+        check_user_achievements(self.request.user)
