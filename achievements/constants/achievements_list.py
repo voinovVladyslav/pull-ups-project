@@ -55,7 +55,7 @@ PULLUP_ACHIEVEMENTS = [
     },
     {
         'type': 'pullup',
-        'title': 'Davtype Goggins',
+        'title': 'David Goggins',
         'description': 'Do 50 pull ups',
         'threshold': 50,
     },
