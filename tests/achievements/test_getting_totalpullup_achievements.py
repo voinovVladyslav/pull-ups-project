@@ -13,18 +13,23 @@ from user.models import User
 from bars.models import Bars
 from counter.models import PullUpCounter
 from achievements.helpers.upsert import upsert_achievements
-from achievements.constants import PULLUP_ACHIEVEMENTS
+from achievements.constants import TOTAL_PULL_UP_ACHIEVEMENTS
 
 
-def test_getting_achievement_for_5_pullups(
+def test_getting_achievement_for_100_total_pullups(
     db, authenticated_client: APIClient, user_email
 ):
     user = User.objects.get(email=user_email)
-    upsert_achievements(user, achievements=PULLUP_ACHIEVEMENTS)
+    upsert_achievements(user, achievements=TOTAL_PULL_UP_ACHIEVEMENTS)
     bar = make(Bars)
+    counters = make(PullUpCounter, 11, reps=9, bar=bar, user=user)
 
-    for achievement in PULLUP_ACHIEVEMENTS:
-        if achievement['type'] == 'pullup' and achievement['threshold'] == 5:
+    achievement_title = None
+    for achievement in TOTAL_PULL_UP_ACHIEVEMENTS:
+        if (
+            achievement['type'] == 'totalpullup' and
+            achievement['threshold'] == 100
+        ):
             achievement_title = achievement['title']
             break
 
@@ -40,31 +45,29 @@ def test_getting_achievement_for_5_pullups(
 
 
 @pytest.mark.parametrize(
-    'reps,done',
+    'reps_total,done',
     [
-        (3, 0),
-        (5, 1),
-        (10, 2),
-        (15, 3),
-        (20, 4),
-        (29, 5),
-        (30, 6),
-        (35, 7),
-        (40, 8),
-        (45, 9),
-        (50, 10),
-        (55, 10),
+        (50, 0),
+        (99, 1),
+        (499, 2),
+        (999, 3),
+        (4999, 4),
+        (6000, 4),
+        (8999, 5),
+        (14999, 6),
+        (17000, 6),
     ],
 )
 def test_getting_lower_achievements_if_higher_achieved(
-    db, authenticated_client: APIClient, user_email, reps, done
+    db, authenticated_client: APIClient, user_email, reps_total, done
 ):
     user = User.objects.get(email=user_email)
-    upsert_achievements(user, achievements=PULLUP_ACHIEVEMENTS)
+    upsert_achievements(user, achievements=TOTAL_PULL_UP_ACHIEVEMENTS)
     bar = make(Bars)
+    counter = make(PullUpCounter, reps=reps_total, bar=bar, user=user)
 
     payload = {
-        'reps': reps
+        'reps': 10
     }
 
     url = get_pull_up_counter_list_url(bar.id)
@@ -78,8 +81,9 @@ def test_not_getting_same_achievement_twice(
     db, authenticated_client: APIClient, user_email
 ):
     user = User.objects.get(email=user_email)
-    upsert_achievements(user, achievements=PULLUP_ACHIEVEMENTS)
+    upsert_achievements(user, achievements=TOTAL_PULL_UP_ACHIEVEMENTS)
     bar = make(Bars)
+    counters = make(PullUpCounter, 11, reps=9, bar=bar, user=user)
 
     payload = {
         'reps': 6
