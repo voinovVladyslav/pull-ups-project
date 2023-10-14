@@ -95,7 +95,6 @@ def test_not_getting_same_achievement_twice(
     done_achievements = user.achievements.filter(done=True)
     assert done_achievements.count() == 1
 
-    url = get_pull_up_counter_list_url(bar.id)
     response = authenticated_client.post(url, payload)
     assert response.status_code == status.HTTP_201_CREATED
     done_achievements = user.achievements.filter(done=True)
