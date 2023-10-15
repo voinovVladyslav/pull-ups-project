@@ -132,3 +132,46 @@ def test_0_reps_does_not_included(
     assert response.status_code == status.HTTP_201_CREATED
     done_achievement = user.achievements.get(title=achievement_title)
     assert done_achievement.done is False
+
+
+def test_1_missing_day_reset_streak(
+    db, authenticated_client: APIClient, user_email
+):
+    user = User.objects.get(email=user_email)
+    upsert_achievements(
+        user, achievements=PULL_UP_DAY_STREAK_ACHIEVEMENTS
+    )
+    bar = make(Bars)
+    number_of_days = 10
+    now = timezone.now()
+    starting_point = now - timedelta(days=number_of_days)
+
+    for i in range(number_of_days):
+
+        if i == 5:
+            starting_point = starting_point + timedelta(days=1)
+            continue
+
+        counter = make(PullUpCounter, bar=bar, user=user, reps=10)
+        counter.created_at = starting_point
+        counter.save()
+        starting_point = starting_point + timedelta(days=1)
+
+    achievement_title = None
+    for achievement in PULL_UP_DAY_STREAK_ACHIEVEMENTS:
+        if (
+            achievement['type'] == 'row' and
+            achievement['threshold'] == 7
+        ):
+            achievement_title = achievement['title']
+            break
+
+    payload = {
+        'reps': 10
+    }
+
+    url = get_pull_up_counter_list_url(bar.id)
+    response = authenticated_client.post(url, payload)
+    assert response.status_code == status.HTTP_201_CREATED
+    done_achievement = user.achievements.get(title=achievement_title)
+    assert done_achievement.done is False
