@@ -37,8 +37,6 @@ def check_totalpullup_achievements(user: User) -> None:
         total_reps=Sum('reps')
     )['total_reps']
 
-    logger.info('total reps: %s', total_reps)
-
     for achievement in achievements:
         if achievement.threshold > total_reps:
             break
