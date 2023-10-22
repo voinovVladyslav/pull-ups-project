@@ -31,6 +31,40 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class UserStatisticsSerializer(serializers.ModelSerializer):
+    total_pullups = serializers.SerializerMethodField()
+    max_pullups = serializers.SerializerMethodField()
+    total_bars_visited = serializers.SerializerMethodField()
+    current_streak = serializers.SerializerMethodField()
+
+    class Meta:
+        model = get_user_model()
+        fields = [
+            'total_pullups',
+            'max_pullups',
+            'total_bars_visited',
+            'current_streak',
+        ]
+        read_only_fields = [
+            'total_pullups',
+            'max_pullups',
+            'total_bars_visited',
+            'current_streak',
+        ]
+
+    def get_total_pullups(self, obj):
+        return 0
+
+    def get_max_pullups(self, obj):
+        return 0
+
+    def get_total_bars_visited(self, obj):
+        return 0
+
+    def get_current_streak(self, obj):
+        return 0
+
+
 class TokenSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(

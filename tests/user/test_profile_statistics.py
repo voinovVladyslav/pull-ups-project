@@ -4,7 +4,7 @@ from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
 
 from tests.fixtures import api_client, authenticated_client
-from .fixtures import user_email, user_password
+from .fixtures import user_email, user_password, create_user
 from .urls import STATS_URL
 
 
