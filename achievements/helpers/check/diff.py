@@ -3,8 +3,9 @@ import logging
 from django.utils import timezone
 
 from achievements.models import Achievement, AchievementType
-from counter.models import PullUpCounter
 from user.models import User
+
+from .query import get_total_different_bars_used_today
 
 
 logger = logging.getLogger('db')
@@ -27,20 +28,12 @@ def check_diff_achievements(user: User) -> None:
         )
         return
 
-    today = timezone.now()
-    start = today.replace(hour=0, minute=0, second=0, microsecond=0)
-
     achievements = Achievement.objects.filter(
         user=user, done=False, type=achievement_type
     ).order_by(
         'threshold'
     )
-
-    diff_bars = PullUpCounter.objects.filter(
-        user=user, reps__gte=1, created_at__gte=start
-    ).distinct(
-        'bar'
-    ).count()
+    diff_bars = get_total_different_bars_used_today(user)
 
     for achievement in achievements:
         if achievement.threshold > diff_bars:
