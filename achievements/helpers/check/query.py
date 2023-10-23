@@ -61,4 +61,4 @@ def get_current_pullup_streak(user: User) -> int:
 def get_max_pullups(user: User) -> int:
     return PullUpCounter.objects.filter(user=user).aggregate(
         Max('reps')
-    )['reps__max']
+    )['reps__max'] or 0
