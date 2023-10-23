@@ -1,11 +1,10 @@
 import logging
 
-from django.db.models import Max
 from django.utils import timezone
 
 from achievements.models import Achievement, AchievementType
-from counter.models import PullUpCounter
 from user.models import User
+from .query import get_max_pullups
 
 
 logger = logging.getLogger('db')
@@ -33,9 +32,8 @@ def check_pullup_achievements(user: User) -> None:
     ).order_by(
         'threshold'
     )
-    max_pullups = PullUpCounter.objects.filter(user=user).aggregate(
-        Max('reps')
-    )['reps__max']
+
+    max_pullups = get_max_pullups(user)
     for achievement in achievements:
         if achievement.threshold > max_pullups:
             break

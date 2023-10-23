@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from django.utils import timezone
-from django.db.models import Sum
+from django.db.models import Sum, Max
 
 from counter.models import PullUpCounter
 from user.models import User
@@ -56,3 +56,9 @@ def get_current_pullup_streak(user: User) -> int:
         break
 
     return result
+
+
+def get_max_pullups(user: User) -> int:
+    return PullUpCounter.objects.filter(user=user).aggregate(
+        Max('reps')
+    )['reps__max']
