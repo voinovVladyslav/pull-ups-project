@@ -18,7 +18,7 @@ from achievements.helpers.upsert import upsert_achievements
 from achievements.constants import PULL_UP_DAY_STREAK_ACHIEVEMENTS
 
 
-def test_getting_achievement_for_7_day_stread(
+def test_getting_achievement_for_7_day_streak(
     db, authenticated_client: APIClient, user_email
 ):
     user = User.objects.get(email=user_email)

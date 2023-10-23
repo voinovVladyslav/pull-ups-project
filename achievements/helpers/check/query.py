@@ -40,6 +40,9 @@ def get_current_pullup_streak(user: User) -> int:
         user=user, reps__gte=1
     ).order_by('-created_at')
 
+    if not pullups:
+        return 0
+
     result = 1
     current = pullups[0].created_at
     day_before = current - timedelta(days=1)
