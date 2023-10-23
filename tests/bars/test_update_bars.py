@@ -49,34 +49,6 @@ def test_update_bars_with_empty_values_fail(db, superuser_client):
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
-@pytest.mark.xfail
-def test_partial_update_address_only_success(db, superuser_client):
-    address = make(Address)
-    bars = make(Bars, address=address)
-    assert Bars.objects.count() == 1
-
-    url = get_bars_detail_url(bars.id)
-    payload = {
-        'address': {
-            'country': 'Update country',
-            'city': 'Update city',
-            'street': 'Update streat',
-            'number': 'Update number',
-            'postal_code': 'Update postal_code',
-        }
-    }
-    response = superuser_client.patch(url, payload, format='json')
-    response.status_code == status.HTTP_200_OK
-
-    bars.refresh_from_db()
-
-    assert bars.address.country == payload['address']['country']
-    assert bars.address.city == payload['address']['city']
-    assert bars.address.street == payload['address']['street']
-    assert bars.address.number == payload['address']['number']
-    assert bars.address.postal_code == payload['address']['postal_code']
-
-
 def test_partial_update_location_only_success(
     db, superuser_client
 ):

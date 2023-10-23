@@ -1,11 +1,11 @@
 import logging
-from datetime import timedelta
 
 from django.utils import timezone
 
 from achievements.models import Achievement, AchievementType
-from counter.models import PullUpCounter
 from user.models import User
+
+from .query import get_current_pullup_streak
 
 
 logger = logging.getLogger('db')
@@ -33,24 +33,7 @@ def check_row_achievements(user: User) -> None:
     ).order_by(
         'threshold'
     )
-    pullups = PullUpCounter.objects.filter(
-        user=user, reps__gte=1
-    ).order_by('-created_at')
-
-    streak = 1
-    current = pullups[0].created_at
-    day_before = current - timedelta(days=1)
-
-    for pullup in pullups:
-        if pullup.created_at.date() == day_before.date():
-            streak += 1
-            current = day_before
-            day_before = current - timedelta(days=1)
-            continue
-
-        if pullup.created_at.date() == current.date():
-            continue
-        break
+    streak = get_current_pullup_streak(user)
 
     for achievement in achievements:
         if achievement.threshold > streak:

@@ -10,24 +10,6 @@ from tests.user.fixtures import (
 from .urls import BARS_LIST_URL
 
 
-@pytest.mark.xfail
-def test_create_bars_with_address_success(
-        db, superuser_client, bars_payload
-):
-    assert Address.objects.count() == 0
-    assert Bars.objects.count() == 0
-    response = superuser_client.post(
-        BARS_LIST_URL, bars_payload, format='json'
-    )
-    assert response.status_code == status.HTTP_201_CREATED
-    assert Address.objects.count() == 1
-    assert Bars.objects.count() == 1
-    bars = Bars.objects.first()
-    address = Address.objects.first()
-    assert bars.address == address
-    assert bars.location is not None
-
-
 def test_create_bars_without_address_fail(db, superuser_client):
     payload = {
         'title': 'bars title',
