@@ -16,7 +16,7 @@ from achievements.helpers.upsert import upsert_achievements
 from achievements.constants import TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS
 
 
-def test_getting_achievement_for_5_diiferent_bars(
+def test_getting_achievement_for_5_different_bars(
     db, authenticated_client: APIClient, user_email
 ):
     user = User.objects.get(email=user_email)

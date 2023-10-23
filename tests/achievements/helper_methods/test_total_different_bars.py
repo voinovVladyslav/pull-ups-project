@@ -1,0 +1,45 @@
+import pytest
+
+from model_bakery.baker import make
+
+from tests.user.fixtures import create_user, user_email, user_password
+
+from user.models import User
+from bars.models import Bars
+from counter.models import PullUpCounter
+
+from achievements.helpers.check.query import get_total_bars
+
+
+@pytest.mark.parametrize(
+    'different_bars',
+    [
+        (3),
+        (5),
+        (25),
+        (40),
+        (50),
+        (100),
+        (130),
+    ],
+)
+def test_many_different_bars(db, create_user, different_bars):
+    user = create_user()
+    bars = make(Bars, different_bars)
+    for bar in bars:
+        make(PullUpCounter, reps=5, bar=bar, user=user)
+    assert get_total_bars(user) == different_bars
+
+
+def test_no_pullups_return_0(db, create_user):
+    user = create_user()
+    assert get_total_bars(user) == 0
+
+
+def test_0_reps_not_included(db, create_user):
+    user = create_user()
+    bars = make(Bars, 5)
+    for bar in bars:
+        make(PullUpCounter, reps=0, bar=bar, user=user)
+
+    assert get_total_bars(user) == 0
