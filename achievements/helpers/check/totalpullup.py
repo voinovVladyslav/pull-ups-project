@@ -1,11 +1,10 @@
 import logging
 
-from django.db.models import Sum
 from django.utils import timezone
 
 from achievements.models import Achievement, AchievementType
-from counter.models import PullUpCounter
 from user.models import User
+from .query import get_total_pullups
 
 
 logger = logging.getLogger('db')
@@ -33,9 +32,7 @@ def check_totalpullup_achievements(user: User) -> None:
     ).order_by(
         'threshold'
     )
-    total_reps = PullUpCounter.objects.filter(user=user).aggregate(
-        total_reps=Sum('reps')
-    )['total_reps']
+    total_reps = get_total_pullups(user)
 
     for achievement in achievements:
         if achievement.threshold > total_reps:

@@ -11,6 +11,7 @@ logger = logging.getLogger('db')
 def upsert_achievements(user: User, achievements: list = None):
     if not achievements:
         achievements = ACHIEVEMENTS
+
     checked_ids = []
     for achievement in achievements:
         achievement_type, created = AchievementType.objects.get_or_create(
