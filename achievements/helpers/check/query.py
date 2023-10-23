@@ -12,7 +12,7 @@ def get_total_pullups(user: User) -> int:
         user=user
     ).aggregate(
         total_reps=Sum('reps')
-    )['total_reps']
+    )['total_reps'] or 0
 
 
 def get_total_bars(user: User) -> int:
