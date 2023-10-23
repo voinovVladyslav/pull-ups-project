@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.utils import timezone
 from django.db.models import Sum
 
@@ -31,3 +33,26 @@ def get_total_different_bars_used_today(user: User) -> int:
     ).distinct(
         'bar'
     ).count()
+
+
+def get_current_pullup_streak(user: User) -> int:
+    pullups = PullUpCounter.objects.filter(
+        user=user, reps__gte=1
+    ).order_by('-created_at')
+
+    result = 1
+    current = pullups[0].created_at
+    day_before = current - timedelta(days=1)
+
+    for pullup in pullups:
+        if pullup.created_at.date() == current.date():
+            continue
+
+        if pullup.created_at.date() == day_before.date():
+            result += 1
+            current = day_before
+            day_before = current - timedelta(days=1)
+            continue
+        break
+
+    return result
