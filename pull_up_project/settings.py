@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'counter',
     'achievements',
     'notifications',
+    'core',
 ]
 
 MIDDLEWARE = [
