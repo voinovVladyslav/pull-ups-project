@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'logs',
     'counter',
     'achievements',
+    'notifications',
 ]
 
 MIDDLEWARE = [
