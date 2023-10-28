@@ -1,12 +1,8 @@
 from django.contrib import admin
-from .models import PullUpCounter
-
 from admin_auto_filters.filters import AutocompleteFilter
 
-
-class UserFilter(AutocompleteFilter):
-    title = 'User'
-    field_name = 'user'
+from core.filters import UserFilter
+from .models import PullUpCounter
 
 
 class BarFilter(AutocompleteFilter):

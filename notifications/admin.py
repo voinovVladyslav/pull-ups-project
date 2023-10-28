@@ -1,12 +1,7 @@
 from django.contrib import admin
-from admin_auto_filters.filters import AutocompleteFilter
 
+from core.filters import UserFilter
 from .models import Notification
-
-
-class UserFilter(AutocompleteFilter):
-    field_name = 'user'
-    title = 'User'
 
 
 @admin.register(Notification)
