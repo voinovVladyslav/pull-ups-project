@@ -11,3 +11,6 @@ class NotificationViewSet(ModelViewSet):
     serializer_class = NotificationSerializer
     permission_classes = [IsAuthenticated,]
     pagination_class = StandartResultPagination
+
+    def get_queryset(self):
+        return self.queryset.order_by('-created_at')
