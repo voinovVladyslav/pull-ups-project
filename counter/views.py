@@ -8,7 +8,7 @@ from drf_spectacular.utils import (
     OpenApiTypes,
 )
 
-from utils.pagination import StandartResultPagination
+from core.pagination import StandartResultPagination
 from bars.models import Bars
 from achievements.helpers.check import check_user_achievements
 from .models import PullUpCounter

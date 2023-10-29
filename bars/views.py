@@ -18,8 +18,8 @@ from drf_spectacular.utils import (
     OpenApiTypes,
 )
 
-from utils.pagination import StandartResultPagination
-from utils.permissions import ReadOnly
+from core.pagination import StandartResultPagination
+from core.permissions import ReadOnly
 from user.models import User
 from .models import Bars
 from .serializers import BarsSerializer

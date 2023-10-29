@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from utils.pagination import StandartResultPagination
 
+from core.pagination import StandartResultPagination
 from .models import Notification
 from .serializers import NotificationSerializer
 

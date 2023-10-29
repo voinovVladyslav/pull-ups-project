@@ -8,8 +8,8 @@ from drf_spectacular.utils import (
     OpenApiTypes,
 )
 
-from utils.permissions import ReadOnly
-from utils.pagination import StandartResultPagination
+from core.permissions import ReadOnly
+from core.pagination import StandartResultPagination
 from .models import Tag
 from .serializers import TagSerializer
 
