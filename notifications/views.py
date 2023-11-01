@@ -3,12 +3,34 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from drf_spectacular.utils import (
+    extend_schema_view,
+    extend_schema,
+    OpenApiParameter,
+    OpenApiTypes,
+)
 
 from core.pagination import StandartResultPagination
 from .models import Notification
 from .serializers import NotificationSerializer
 
 
+@extend_schema_view(
+    list=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                'page',
+                OpenApiTypes.INT,
+                description='Page number',
+            ),
+            OpenApiParameter(
+                'unread',
+                OpenApiTypes.BOOL,
+                description='Filter by unread status',
+            ),
+        ]
+    )
+)
 class NotificationApiView(ListAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
@@ -17,12 +39,13 @@ class NotificationApiView(ListAPIView):
 
     def get_queryset(self):
         qs = self.queryset
-        return qs.filter(user=self.request.user).order_by('-created_at')
+        qs = qs.filter(user=self.request.user)
 
-    def mark_read(self, request):
-        qs = self.get_queryset()
-        qs.update(unread=False)
-        return Response(status=200)
+        unread_filter = self.request.query_params.get('unread', None)
+        if unread_filter in ['True', 'False']:
+            qs = qs.filter(unread=unread_filter)
+
+        return qs.order_by('-created_at')
 
 
 class MarkAsReadNotificationApiView(APIView):

@@ -17,10 +17,16 @@ from .urls import NOTIFICATIONS_URL
     [
         (3, True),
         (5, False),
+        (8, 'test'),
+        (8, ''),
+        (8, 10),
     ],
     ids=[
         'Filter by unread=True',
         'Filter by unread=False',
+        'Filter by unread=test',
+        'Filter by unread=""',
+        'Filter by unread=10',
     ]
 )
 def test_filter_by_unread(
@@ -29,10 +35,8 @@ def test_filter_by_unread(
     user = User.objects.first()
     make(Notification, 3, user=user, unread=True)
     make(Notification, 5, user=user, unread=False)
-    params = {
-        'unread': unread_value,
-    }
-    response = authenticated_client.get(NOTIFICATIONS_URL, params=params)
+    url = f"{NOTIFICATIONS_URL}?unread={unread_value}"
+    response = authenticated_client.get(url)
     assert response.status_code == status.HTTP_200_OK
     data = json.loads(response.content)
     assert len(data['results']) == count
