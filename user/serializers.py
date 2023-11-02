@@ -62,19 +62,19 @@ class UserStatisticsSerializer(serializers.ModelSerializer):
             'current_streak',
         ]
 
-    def get_total_pullups(self, obj):
+    def get_total_pullups(self, obj) -> int:
         return get_total_pullups(obj)
 
-    def get_max_pullups(self, obj):
+    def get_max_pullups(self, obj) -> int:
         return get_max_pullups(obj)
 
-    def get_bars_visited(self, obj):
+    def get_bars_visited(self, obj) -> int:
         return get_total_bars(obj)
 
-    def get_bars_visited_today(self, obj):
+    def get_bars_visited_today(self, obj) -> int:
         return get_total_different_bars_used_today(obj)
 
-    def get_current_streak(self, obj):
+    def get_current_streak(self, obj) -> int:
         return get_current_pullup_streak(obj)
 
 

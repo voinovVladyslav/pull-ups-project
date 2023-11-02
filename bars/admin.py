@@ -29,3 +29,7 @@ class BarsAdmin(admin.ModelAdmin):
         'location',
         'address',
     )
+    search_fields = (
+        'id',
+        'title',
+    )

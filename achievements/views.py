@@ -28,7 +28,7 @@ class AchievementViewSet(
 
     @action(
         methods=['POST'], detail=True,
-        url_name='reset-single', url_path='reset'
+        url_name='reset-single', url_path='reset-single'
     )
     def reset_achievement(self, request, pk=None):
         achievement = Achievement.objects.get(pk=pk)
@@ -46,7 +46,7 @@ class AchievementViewSet(
 
     @action(
         methods=['POST'], detail=False,
-        url_name='reset-all', url_path='reset'
+        url_name='reset-all', url_path='reset-all'
     )
     def reset_achievements(self, request):
         self.request.user.achievements.update(done=False)

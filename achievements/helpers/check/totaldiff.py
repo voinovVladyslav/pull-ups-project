@@ -3,6 +3,8 @@ import logging
 from django.utils import timezone
 
 from achievements.models import Achievement, AchievementType
+from notifications.models import Notification
+from notifications.helpers import get_message_for_achievement
 from user.models import User
 from .query import get_total_bars
 
@@ -40,6 +42,10 @@ def check_totaldiff_achievements(user: User) -> None:
         achievement.achieved_at = timezone.now()
         achievement.done = True
         achievement.save()
+        Notification.objects.create(
+            message=get_message_for_achievement(achievement),
+            user=user,
+        )
         logger.info(
             'User %s got achievement: %s',
             user.email, achievement.title,

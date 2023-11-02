@@ -23,4 +23,5 @@ urlpatterns = [
     path('api/', include('bars.urls')),
     path('api/', include('tag.urls')),
     path('api/', include('achievements.urls')),
+    path('api/', include('notifications.urls')),
 ]

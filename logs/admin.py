@@ -1,13 +1,8 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from admin_auto_filters.filters import AutocompleteFilter
 
+from core.filters import UserFilter, BarFilter
 from .models import LogRecord
-
-
-class UserFilter(AutocompleteFilter):
-    title = 'User'
-    field_name = 'user'
 
 
 @admin.register(LogRecord)
@@ -33,6 +28,7 @@ class LogRecordAdmin(admin.ModelAdmin):
         'type',
         'level__name',
         UserFilter,
+        BarFilter,
     )
     search_fields = (
         'message',
