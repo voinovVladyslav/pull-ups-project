@@ -12,6 +12,7 @@ from .urls import ACHIEVEMENTS_LIST_URL
 from user.models import User
 from bars.models import Bars
 from counter.models import PullUpCounter
+from notifications.models import Notification
 from achievements.helpers.upsert import upsert_achievements
 from achievements.constants import TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS
 
@@ -44,11 +45,13 @@ def test_getting_achievement_for_5_different_bars(
         'reps': 5
     }
 
+    assert Notification.objects.count() == 0
     url = get_pull_up_counter_list_url(main_bar.id)
     response = authenticated_client.post(url, payload)
     assert response.status_code == status.HTTP_201_CREATED
     done_achievement = user.achievements.get(title=achievement_title)
     assert done_achievement.done is True
+    assert Notification.objects.count() == 1
 
 
 @pytest.mark.parametrize(
@@ -88,6 +91,7 @@ def test_getting_lower_achievements_if_higher_achieved(
     assert response.status_code == status.HTTP_201_CREATED
     done_achievements = user.achievements.filter(done=True)
     assert done_achievements.count() == done
+    assert Notification.objects.count() == done
 
 
 def test_not_getting_same_achievement_twice(
