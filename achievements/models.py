@@ -11,6 +11,21 @@ class AchievementType(models.Model):
         return self.name
 
 
+class AchievementImage(models.Model):
+    class Meta:
+        unique_together = [['type', 'threshold']]
+
+    type = models.ForeignKey(
+        AchievementType,
+        on_delete=models.CASCADE,
+    )
+    threshold = models.PositiveIntegerField()
+    image_url = models.URLField()
+
+    def __str__(self) -> str:
+        return f"Image #{self.id} ({self.type.name}-{self.threshold})"
+
+
 class Achievement(models.Model):
     title = models.CharField(
         max_length=255,
@@ -27,6 +42,12 @@ class Achievement(models.Model):
     type = models.ForeignKey(
         AchievementType,
         on_delete=models.CASCADE,
+    )
+    image = models.ForeignKey(
+        AchievementImage,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
     )
     user = models.ForeignKey(
         'user.User',
