@@ -72,6 +72,7 @@ class AchievementImageModelAdmin(admin.ModelAdmin):
         'type__name',
         'image_url',
     )
+
     def image_preview(self, obj):
         if not obj.image_url:
             return 'N/A'
