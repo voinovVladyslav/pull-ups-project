@@ -22,6 +22,9 @@ class AchievementImage(models.Model):
     threshold = models.PositiveIntegerField()
     image_url = models.URLField()
 
+    def __str__(self) -> str:
+        return f"Image #{self.id} ({self.type.name}-{self.threshold})"
+
 
 class Achievement(models.Model):
     title = models.CharField(
