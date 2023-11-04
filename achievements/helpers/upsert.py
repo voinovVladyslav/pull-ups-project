@@ -1,7 +1,7 @@
 import logging
 
 from user.models import User
-from achievements.models import Achievement, AchievementType
+from achievements.models import Achievement, AchievementType, AchievementImage
 from achievements.constants import ACHIEVEMENTS
 
 
@@ -17,11 +17,15 @@ def upsert_achievements(user: User, achievements: list = None):
         achievement_type, created = AchievementType.objects.get_or_create(
             name=achievement['type']
         )
+        image = AchievementImage.objects.filter(
+            threshold=achievement['threshold'], type=achievement_type
+        ).first()
         obj, created = Achievement.objects.get_or_create(
             title=achievement['title'],
             description=achievement['description'],
             threshold=achievement['threshold'],
             type=achievement_type,
+            image=image,
             user=user,
         )
         if created:
