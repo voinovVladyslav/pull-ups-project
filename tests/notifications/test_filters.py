@@ -39,4 +39,9 @@ def test_filter_by_unread(
     response = authenticated_client.get(url)
     assert response.status_code == status.HTTP_200_OK
     data = json.loads(response.content)
-    assert len(data['results']) == count
+
+    if isinstance(unread_value, bool):
+        # remove pagination when filtering
+        assert len(data) == count
+    else:
+        assert len(data['results']) == count

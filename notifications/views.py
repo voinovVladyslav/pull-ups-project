@@ -47,6 +47,11 @@ class NotificationApiView(ListAPIView):
 
         return qs.order_by('-created_at')
 
+    def paginate_queryset(self, queryset):
+        if self.get_unread_filter(self.request) is not None:
+            return None
+        return super().paginate_queryset(queryset)
+
     @staticmethod
     def get_unread_filter(request):
         result = request.query_params.get('unread', None)
