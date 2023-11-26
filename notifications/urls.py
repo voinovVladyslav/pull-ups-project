@@ -8,7 +8,7 @@ app_name = 'notifications'
 
 urlpatterns = [
     path(
-        'notifications',
+        'notifications/',
         NotificationApiView.as_view(),
         name='notifications-list',
     ),
