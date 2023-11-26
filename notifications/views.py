@@ -21,7 +21,9 @@ from .serializers import NotificationSerializer
             OpenApiParameter(
                 'unread',
                 OpenApiTypes.BOOL,
-                description='Filter by unread status',
+                description=(
+                    'Filter by unread status. Warning: removes pagination'
+                ),
             ),
         ]
     )
@@ -54,7 +56,12 @@ class NotificationApiView(ListAPIView):
         if not result:
             return None
 
-        if result in ['True', 'False']:
+        result = {
+            'true': True,
+            'false': False,
+        }.get(result, result)
+
+        if isinstance(result, bool):
             return result
 
         return None
