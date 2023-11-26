@@ -41,19 +41,33 @@ class NotificationApiView(ListAPIView):
         qs = self.queryset
         qs = qs.filter(user=self.request.user)
 
-        unread_filter = self.request.query_params.get('unread', None)
-        if unread_filter in ['True', 'False']:
+        unread_filter = self.get_unread_filter(self.request)
+        if unread_filter:
             qs = qs.filter(unread=unread_filter)
 
         return qs.order_by('-created_at')
 
+    @staticmethod
+    def get_unread_filter(request):
+        result = request.query_params.get('unread', None)
+
+        if not result:
+            return None
+
+        if result in ['True', 'False']:
+            return result
+
+        return None
+
 
 class MarkAsReadNotificationApiView(APIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         result = Notification.objects.filter(
-            user=request.user, unread=True
+            user=self.request.user, unread=True
         ).update(
             unread=False
         )
