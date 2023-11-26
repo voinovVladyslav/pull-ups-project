@@ -39,7 +39,7 @@ class NotificationApiView(ListAPIView):
         qs = qs.filter(user=self.request.user)
 
         unread_filter = self.get_unread_filter(self.request)
-        if unread_filter:
+        if unread_filter in [False, True]:
             qs = qs.filter(unread=unread_filter)
 
         return qs.order_by('-created_at')
@@ -59,7 +59,7 @@ class NotificationApiView(ListAPIView):
         result = {
             'true': True,
             'false': False,
-        }.get(result, result)
+        }.get(result.lower(), result)
 
         if isinstance(result, bool):
             return result
