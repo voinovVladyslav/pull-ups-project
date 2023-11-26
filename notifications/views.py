@@ -16,13 +16,8 @@ from .serializers import NotificationSerializer
 
 
 @extend_schema_view(
-    list=extend_schema(
+    get=extend_schema(
         parameters=[
-            OpenApiParameter(
-                'page',
-                OpenApiTypes.INT,
-                description='Page number',
-            ),
             OpenApiParameter(
                 'unread',
                 OpenApiTypes.BOOL,
