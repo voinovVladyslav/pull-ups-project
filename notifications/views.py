@@ -16,17 +16,14 @@ from .serializers import NotificationSerializer
 
 
 @extend_schema_view(
-    list=extend_schema(
+    get=extend_schema(
         parameters=[
-            OpenApiParameter(
-                'page',
-                OpenApiTypes.INT,
-                description='Page number',
-            ),
             OpenApiParameter(
                 'unread',
                 OpenApiTypes.BOOL,
-                description='Filter by unread status',
+                description=(
+                    'Filter by unread status. Warning: removes pagination'
+                ),
             ),
         ]
     )
@@ -41,19 +38,43 @@ class NotificationApiView(ListAPIView):
         qs = self.queryset
         qs = qs.filter(user=self.request.user)
 
-        unread_filter = self.request.query_params.get('unread', None)
-        if unread_filter in ['True', 'False']:
+        unread_filter = self.get_unread_filter(self.request)
+        if unread_filter in [False, True]:
             qs = qs.filter(unread=unread_filter)
 
         return qs.order_by('-created_at')
 
+    def paginate_queryset(self, queryset):
+        if self.get_unread_filter(self.request) is not None:
+            return None
+        return super().paginate_queryset(queryset)
+
+    @staticmethod
+    def get_unread_filter(request):
+        result = request.query_params.get('unread', None)
+
+        if not result:
+            return None
+
+        result = {
+            'true': True,
+            'false': False,
+        }.get(result.lower(), result)
+
+        if isinstance(result, bool):
+            return result
+
+        return None
+
 
 class MarkAsReadNotificationApiView(APIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         result = Notification.objects.filter(
-            user=request.user, unread=True
+            user=self.request.user, unread=True
         ).update(
             unread=False
         )

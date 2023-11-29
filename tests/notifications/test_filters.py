@@ -15,8 +15,8 @@ from .urls import NOTIFICATIONS_URL
 @pytest.mark.parametrize(
     'count,unread_value',
     [
-        (3, True),
-        (5, False),
+        (3, 'true'),
+        (5, 'false'),
         (8, 'test'),
         (8, ''),
         (8, 10),
@@ -39,4 +39,9 @@ def test_filter_by_unread(
     response = authenticated_client.get(url)
     assert response.status_code == status.HTTP_200_OK
     data = json.loads(response.content)
-    assert len(data['results']) == count
+
+    if unread_value in ['true', 'false']:
+        # remove pagination when filtering
+        assert len(data) == count
+    else:
+        assert len(data['results']) == count
