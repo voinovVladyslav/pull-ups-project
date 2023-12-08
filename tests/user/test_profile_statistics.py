@@ -1,7 +1,10 @@
+from datetime import timedelta
+
 import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from model_bakery.baker import make
 
 from user.models import User
@@ -41,3 +44,47 @@ def test_calculated_stats(db, authenticated_client: APIClient, user_email):
     assert data['current_streak'] == 1
     assert data['bars_visited'] == 1
     assert data['bars_visited_today'] == 1
+
+
+def test_no_pullups_means_0_streak(
+    db, authenticated_client: APIClient, user_email
+):
+    user = User.objects.get(email=user_email)
+    response = authenticated_client.get(STATS_URL)
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert data['current_streak'] == 0
+
+
+def test_streak_0_if_no_pullups_yesterday(
+    db, authenticated_client: APIClient, user_email
+):
+    user = User.objects.get(email=user_email)
+    bar = make(Bars)
+    two_days_ago = timezone.now() - timedelta(days=2)
+    counter = make(
+        PullUpCounter, user=user, bar=bar, reps=33,
+    )
+    counter.created_at = two_days_ago
+    counter.save()
+    response = authenticated_client.get(STATS_URL)
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert data['current_streak'] == 0
+
+
+def test_streak_1_if_last_pull_up_yesterday(
+    db, authenticated_client: APIClient, user_email
+):
+    user = User.objects.get(email=user_email)
+    bar = make(Bars)
+    yesterday = timezone.now() - timedelta(days=1)
+    counter = make(
+        PullUpCounter, user=user, bar=bar, reps=33,
+    )
+    counter.created_at = yesterday
+    counter.save()
+    response = authenticated_client.get(STATS_URL)
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert data['current_streak'] == 1
