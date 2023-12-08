@@ -39,14 +39,17 @@ def get_current_pullup_streak(user: User) -> int:
     pullups = PullUpCounter.objects.filter(
         user=user, reps__gte=1
     ).order_by('-created_at')
+    last_pullup = pullups.first()
 
-    if not pullups:
+    yesterday = timezone.now() - timedelta(days=1)
+    yesterday = yesterday.replace(hour=0, minute=0, second=0)
+
+    if not pullups or last_pullup.created_at < yesterday:
         return 0
 
     result = 1
     current = pullups[0].created_at
     day_before = current - timedelta(days=1)
-
     for pullup in pullups:
         if pullup.created_at.date() == current.date():
             continue
