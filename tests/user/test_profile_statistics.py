@@ -71,3 +71,20 @@ def test_streak_0_if_no_pullups_yesterday(
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data['current_streak'] == 0
+
+
+def test_streak_1_if_last_pull_up_yesterday(
+    db, authenticated_client: APIClient, user_email
+):
+    user = User.objects.get(email=user_email)
+    bar = make(Bars)
+    yesterday = timezone.now() - timedelta(days=1)
+    counter = make(
+        PullUpCounter, user=user, bar=bar, reps=33,
+    )
+    counter.created_at = yesterday
+    counter.save()
+    response = authenticated_client.get(STATS_URL)
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert data['current_streak'] == 1
