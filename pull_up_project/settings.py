@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'admin_auto_filters',
+    'django_extensions',
 
     # local
     'user',
