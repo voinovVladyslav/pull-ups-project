@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'admin_auto_filters',
+    'django_extensions',
 
     # local
     'user',
@@ -211,4 +212,19 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
+}
+
+
+# Documentation
+GRAPH_MODELS = {
+    'app_labels': [
+        'user',
+        'bars',
+        'tag',
+        'logs',
+        'counter',
+        'achievements',
+        'notifications',
+        'core',
+    ],
 }
