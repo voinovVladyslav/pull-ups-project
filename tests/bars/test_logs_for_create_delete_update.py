@@ -1,4 +1,3 @@
-import pytest
 from model_bakery.baker import make
 
 from logs.models import LogRecord
@@ -6,11 +5,6 @@ from user.models import User
 from bars.models import Bars
 
 from .urls import BARS_LIST_URL, get_bars_detail_url
-from tests.user.fixtures import (
-    superuser_email, superuser_password, create_superuser
-)
-from tests.bars.fixtures import bars_payload
-from tests.fixtures import superuser_client, api_client
 
 
 def test_log_record_for_bars_create(

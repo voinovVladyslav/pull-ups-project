@@ -2,9 +2,6 @@ import pytest
 
 from model_bakery.baker import make
 
-from tests.user.fixtures import create_user, user_email, user_password
-
-from user.models import User
 from bars.models import Bars
 from counter.models import PullUpCounter
 

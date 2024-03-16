@@ -2,8 +2,6 @@ import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from tests.fixtures import api_client, authenticated_client
-from tests.user.fixtures import create_user, user_email, user_password
 from .urls import ACHIEVEMENTS_LIST_URL
 
 

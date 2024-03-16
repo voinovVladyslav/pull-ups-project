@@ -1,7 +1,4 @@
-import pytest
 from model_bakery.baker import make
-
-from tests.user.fixtures import create_user, user_email, user_password
 
 from achievements.models import (
     AchievementType, AchievementImage, Achievement

@@ -1,12 +1,7 @@
 import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
-from model_bakery.baker import make
 
-from user.models import User
-from notifications.models import Notification
-from tests.fixtures import api_client, authenticated_client
-from tests.user.fixtures import user_email, user_password, create_user
 from .urls import NOTIFICATIONS_URL
 
 

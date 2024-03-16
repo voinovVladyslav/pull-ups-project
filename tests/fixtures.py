@@ -1,10 +1,6 @@
 import pytest
 from rest_framework.test import APIClient
 
-from tests.user.fixtures import (
-        create_user, user_email, user_password, create_superuser
-)
-
 
 @pytest.fixture
 def api_client():

@@ -2,9 +2,7 @@ import pytest
 from rest_framework import status
 from django.contrib.auth import get_user_model
 
-from .fixtures import create_user, user_email, user_password
 from .urls import ME_URL
-from tests.fixtures import api_client, authenticated_client
 
 
 def test_auth_required_for_profile_access(db, api_client):

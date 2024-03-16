@@ -1,17 +1,13 @@
 from datetime import timedelta
 
-import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
-from django.contrib.auth import get_user_model
 from django.utils import timezone
 from model_bakery.baker import make
 
 from user.models import User
 from bars.models import Bars
 from counter.models import PullUpCounter
-from tests.fixtures import api_client, authenticated_client
-from .fixtures import user_email, user_password, create_user
 from .urls import STATS_URL
 
 

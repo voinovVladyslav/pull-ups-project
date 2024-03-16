@@ -7,8 +7,6 @@ from rest_framework.test import APIClient
 from django.utils import timezone
 from model_bakery.baker import make
 
-from tests.fixtures import api_client, authenticated_client
-from tests.user.fixtures import create_user, user_email, user_password
 from tests.counter.urls import get_pull_up_counter_list_url
 
 from user.models import User

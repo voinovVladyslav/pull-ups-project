@@ -1,17 +1,9 @@
-import json
-
-import pytest
 from rest_framework import status
 from model_bakery.baker import make
 
 from counter.models import PullUpCounter
 from bars.models import Bars
 from user.models import User
-from tests.fixtures import superuser_client, api_client
-from tests.user.fixtures import (
-    create_superuser, superuser_email, superuser_password,
-    user_email, user_password, create_user,
-)
 from .urls import get_pull_up_counter_detail_url, get_pull_up_counter_list_url
 
 

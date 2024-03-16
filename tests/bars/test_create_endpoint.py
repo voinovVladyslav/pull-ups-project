@@ -1,12 +1,6 @@
-import pytest
 from rest_framework import status
 
 from bars.models import Bars
-from tests.fixtures import api_client, superuser_client
-from .fixtures import bars_payload
-from tests.user.fixtures import (
-    create_superuser, superuser_email, superuser_password
-)
 from .urls import BARS_LIST_URL
 
 

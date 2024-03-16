@@ -3,11 +3,6 @@ from rest_framework import status
 from model_bakery.baker import make
 
 from bars.models import Bars
-from tests.fixtures import superuser_client, api_client
-from tests.user.fixtures import (
-    create_superuser, superuser_email, superuser_password
-)
-from .fixtures import bars_payload
 from .urls import get_bars_detail_url
 
 

@@ -3,10 +3,6 @@ from rest_framework import status
 
 
 from .urls import BARS_LIST_URL, get_bars_detail_url
-from tests.user.fixtures import (
-    superuser_email, superuser_password, create_superuser
-)
-from tests.fixtures import superuser_client, api_client
 
 
 @pytest.mark.parametrize(

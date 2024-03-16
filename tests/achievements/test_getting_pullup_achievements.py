@@ -4,14 +4,10 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from model_bakery.baker import make
 
-from tests.fixtures import api_client, authenticated_client
-from tests.user.fixtures import create_user, user_email, user_password
 from tests.counter.urls import get_pull_up_counter_list_url
-from .urls import ACHIEVEMENTS_LIST_URL
 
 from user.models import User
 from bars.models import Bars
-from counter.models import PullUpCounter
 from notifications.models import Notification
 from achievements.helpers.upsert import upsert_achievements
 from achievements.constants import PULLUP_ACHIEVEMENTS

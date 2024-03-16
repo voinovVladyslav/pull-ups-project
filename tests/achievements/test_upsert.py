@@ -1,7 +1,3 @@
-import pytest
-
-from tests.user.fixtures import create_user, user_email, user_password
-
 from achievements.constants import ACHIEVEMENTS
 from achievements.helpers.upsert import upsert_achievements
 
