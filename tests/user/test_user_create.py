@@ -23,7 +23,7 @@ def test_create_user_success(
 def test_create_user_with_existing_email_fail(
         db, api_client: APIClient, user_email, user_password
 ):
-    user = get_user_model().objects.create_user(user_email, user_password)
+    get_user_model().objects.create_user(user_email, user_password)
     payload = {
         'email': user_email,
         'password': user_password,
@@ -36,7 +36,6 @@ def test_create_user_with_existing_email_fail(
 def test_create_user_without_password_fail(
         db, api_client: APIClient, user_email
 ):
-    user = get_user_model()
     payload = {
         'email': user_email,
         'password': ''
@@ -65,7 +64,6 @@ def test_create_user_with_existing_password_success(
 def test_create_user_without_data_fail(
         db, api_client: APIClient
 ):
-    user = get_user_model()
     payload = {
         'email': '',
         'password': ''
@@ -76,7 +74,7 @@ def test_create_user_without_data_fail(
 
 
 @pytest.mark.parametrize(
-    'email_name,response_code',
+    ('email_name', 'response_code'),
     [
         ('usergmail.com', status.HTTP_400_BAD_REQUEST),
         ('user@gmailcom', status.HTTP_400_BAD_REQUEST),
@@ -111,7 +109,7 @@ def test_create_user_wrong_emails_fail(
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code,n_of_users',
+    ('method_name', 'response_code', 'n_of_users'),
     [
         ('get', status.HTTP_405_METHOD_NOT_ALLOWED, 0),
         ('put', status.HTTP_405_METHOD_NOT_ALLOWED, 0),

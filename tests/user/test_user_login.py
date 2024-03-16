@@ -43,7 +43,7 @@ def test_login_with_missing_email_or_password(
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code',
+    ('method_name', 'response_code'),
     [
         ('get', status.HTTP_405_METHOD_NOT_ALLOWED),
         ('put', status.HTTP_405_METHOD_NOT_ALLOWED),

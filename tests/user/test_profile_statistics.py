@@ -11,7 +11,7 @@ from counter.models import PullUpCounter
 from .urls import STATS_URL
 
 
-def test_stats_fields(db, authenticated_client: APIClient, user_email):
+def test_stats_fields(db, authenticated_client: APIClient):
     response = authenticated_client.get(STATS_URL)
     assert response.status_code == status.HTTP_200_OK
     fields = [
@@ -29,7 +29,7 @@ def test_stats_fields(db, authenticated_client: APIClient, user_email):
 def test_calculated_stats(db, authenticated_client: APIClient, user_email):
     user = User.objects.get(email=user_email)
     bar = make(Bars)
-    counter = make(PullUpCounter, 2, user=user, bar=bar, reps=33)
+    make(PullUpCounter, 2, user=user, bar=bar, reps=33)
     response = authenticated_client.get(STATS_URL)
 
     assert response.status_code == status.HTTP_200_OK
@@ -42,10 +42,7 @@ def test_calculated_stats(db, authenticated_client: APIClient, user_email):
     assert data['bars_visited_today'] == 1
 
 
-def test_no_pullups_means_0_streak(
-    db, authenticated_client: APIClient, user_email
-):
-    user = User.objects.get(email=user_email)
+def test_no_pullups_means_0_streak(db, authenticated_client: APIClient):
     response = authenticated_client.get(STATS_URL)
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
