@@ -12,7 +12,7 @@ def test_authentication_required(
 ):
     bar = make(Bars)
     user = create_user()
-    count = make(PullUpCounter, bar=bar, user=user)
+    make(PullUpCounter, bar=bar, user=user)
 
     url = get_pull_up_counter_list_url(bar.id)
     response = api_client.get(url)
@@ -25,8 +25,8 @@ def test_return_only_user_related_counter(
     bar = make(Bars)
     user = User.objects.get(email=superuser_email)
     second_user = create_user()
-    counters = make(PullUpCounter, 5, user=user, bar=bar)
-    second_user_counters = make(PullUpCounter, 5, user=second_user, bar=bar)
+    make(PullUpCounter, 5, user=user, bar=bar)
+    make(PullUpCounter, 5, user=second_user, bar=bar)
     assert PullUpCounter.objects.count() == 10
 
     url = get_pull_up_counter_list_url(bar.id)
