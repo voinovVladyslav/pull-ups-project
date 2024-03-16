@@ -62,10 +62,12 @@ class BarsViewSet(viewsets.ModelViewSet):
 
         if self.request.user.is_authenticated:
             queryset = queryset.annotate(
-                is_favorite=Exists(User.favorite_pullupbars.through.objects.filter(
-                    user_id=self.request.user.id,
-                    bars_id=OuterRef('pk'),
-                ))
+                is_favorite=Exists(
+                    User.favorite_pullupbars.through.objects.filter(
+                        user_id=self.request.user.id,
+                        pullupbars_id=OuterRef('pk'),
+                    )
+                )
             )
 
         ref_point_raw = self.request.query_params.get('ref_point')
@@ -92,7 +94,7 @@ class BarsViewSet(viewsets.ModelViewSet):
         logger.info(
             'Updated bars: %s',
             model_to_dict(bars),
-            extra=dict(type='bars_update', bar=bars, user=self.request.user)
+            extra=dict(type='bars_update', pullupbar=bars, user=self.request.user)
         )
 
     @action(

@@ -31,7 +31,7 @@ class DatabaseLogHandler(logging.Handler):
             if user:
                 log_record.user = user
 
-        if hasattr(record, 'bar'):
+        if hasattr(record, 'pullupbar'):
             if isinstance(record.pullupbar, PullUpBars):
                 pullupbar = record.pullupbar
             else:

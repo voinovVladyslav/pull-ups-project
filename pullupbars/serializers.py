@@ -48,6 +48,6 @@ class BarsSerializer(GeoModelSerializer):
         logger.info(
             'Created bars: %s',
             model_to_dict(bars),
-            extra=dict(type='bars_create', bar=bars, user=user)
+            extra=dict(type='bars_create', pullupbar=bars, user=user)
         )
         return bars

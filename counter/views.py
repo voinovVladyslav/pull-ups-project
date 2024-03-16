@@ -41,5 +41,5 @@ class PullUpCounterViewSet(ModelViewSet):
         bar = PullUpBars.objects.filter(id=self.kwargs['bar_pk']).first()
         if not bar:
             raise ValidationError({'bar_id': 'bars does not exists'})
-        serializer.save(user=self.request.user, bar=bar)
+        serializer.save(user=self.request.user, pullupbar=bar)
         check_user_achievements(self.request.user)
