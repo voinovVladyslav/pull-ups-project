@@ -20,7 +20,7 @@ def get_total_bars(user: User) -> int:
         user=user,
         reps__gte=1,
     ).distinct(
-        'bar'
+        'pullupbar'
     ).count()
 
 
@@ -31,7 +31,7 @@ def get_total_different_bars_used_today(user: User) -> int:
     return PullUpCounter.objects.filter(
         user=user, reps__gte=1, created_at__gte=start
     ).distinct(
-        'bar'
+        'pullupbar'
     ).count()
 
 

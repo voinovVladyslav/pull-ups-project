@@ -7,7 +7,7 @@ from model_bakery.baker import make
 from tests.counter.urls import get_pull_up_counter_list_url
 
 from user.models import User
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from counter.models import PullUpCounter
 from notifications.models import Notification
 from achievements.helpers.upsert import upsert_achievements
@@ -19,8 +19,8 @@ def test_getting_achievement_for_100_total_pullups(
 ):
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=TOTAL_PULL_UP_ACHIEVEMENTS)
-    bar = make(Bars)
-    make(PullUpCounter, 11, reps=9, bar=bar, user=user)
+    bar = make(PullUpBars)
+    make(PullUpCounter, 11, reps=9, pullupbar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_PULL_UP_ACHIEVEMENTS:
@@ -63,8 +63,8 @@ def test_getting_lower_achievements_if_higher_achieved(
 ):
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=TOTAL_PULL_UP_ACHIEVEMENTS)
-    bar = make(Bars)
-    make(PullUpCounter, reps=reps_total, bar=bar, user=user)
+    bar = make(PullUpBars)
+    make(PullUpCounter, reps=reps_total, pullupbar=bar, user=user)
 
     payload = {
         'reps': 10
@@ -83,8 +83,8 @@ def test_not_getting_same_achievement_twice(
 ):
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=TOTAL_PULL_UP_ACHIEVEMENTS)
-    bar = make(Bars)
-    make(PullUpCounter, 11, reps=9, bar=bar, user=user)
+    bar = make(PullUpBars)
+    make(PullUpCounter, 11, reps=9, pullupbar=bar, user=user)
 
     payload = {
         'reps': 6

@@ -2,7 +2,7 @@ import pytest
 
 from model_bakery.baker import make
 
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from counter.models import PullUpCounter
 
 from achievements.helpers.check.query import get_max_pullups
@@ -20,8 +20,8 @@ from achievements.helpers.check.query import get_max_pullups
 )
 def test_getting_max_pullups(db, create_user, reps):
     user = create_user()
-    bar = make(Bars)
-    make(PullUpCounter, user=user, bar=bar, reps=reps)
+    bar = make(PullUpBars)
+    make(PullUpCounter, user=user, pullupbar=bar, reps=reps)
     assert get_max_pullups(user) == reps
 
 

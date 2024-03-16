@@ -7,7 +7,7 @@ from model_bakery.baker import make
 from tests.counter.urls import get_pull_up_counter_list_url
 
 from user.models import User
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from counter.models import PullUpCounter
 from notifications.models import Notification
 from achievements.helpers.upsert import upsert_achievements
@@ -21,13 +21,13 @@ def test_getting_achievement_for_5_different_bars(
     upsert_achievements(
         user, achievements=TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS
     )
-    bars = make(Bars, 5)
+    bars = make(PullUpBars, 5)
     main_bar = None
     for bar in bars:
         if main_bar is None:
             main_bar = bar
             continue
-        make(PullUpCounter, reps=10, bar=bar, user=user)
+        make(PullUpCounter, reps=10, pullupbar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS:
@@ -71,13 +71,13 @@ def test_getting_lower_achievements_if_higher_achieved(
     upsert_achievements(
         user, achievements=TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS
     )
-    bars = make(Bars, different_bars)
+    bars = make(PullUpBars, different_bars)
     main_bar = None
     for bar in bars:
         if main_bar is None:
             main_bar = bar
             continue
-        make(PullUpCounter, reps=5, bar=bar, user=user)
+        make(PullUpCounter, reps=5, pullupbar=bar, user=user)
 
     payload = {
         'reps': 10
@@ -98,13 +98,13 @@ def test_not_getting_same_achievement_twice(
     upsert_achievements(
         user, achievements=TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS
     )
-    bars = make(Bars, 5)
+    bars = make(PullUpBars, 5)
     main_bar = None
     for bar in bars:
         if main_bar is None:
             main_bar = bar
             continue
-        make(PullUpCounter, reps=10, bar=bar, user=user)
+        make(PullUpCounter, reps=10, pullupbar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS:
@@ -138,13 +138,13 @@ def test_0_reps_does_not_included(
     upsert_achievements(
         user, achievements=TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS
     )
-    bars = make(Bars, 5)
+    bars = make(PullUpBars, 5)
     main_bar = None
     for bar in bars:
         if main_bar is None:
             main_bar = bar
             continue
-        make(PullUpCounter, reps=0, bar=bar, user=user)
+        make(PullUpCounter, reps=0, pullupbar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS:

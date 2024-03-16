@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from .models import Bars
+from .models import PullUpBars
 
 
-@admin.register(Bars)
+@admin.register(PullUpBars)
 class BarsAdmin(admin.ModelAdmin):
     list_display = (
         'id',

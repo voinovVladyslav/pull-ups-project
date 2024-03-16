@@ -1,6 +1,6 @@
 from rest_framework import status
 
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from .urls import BARS_LIST_URL
 
 
@@ -13,7 +13,7 @@ def test_create_bars_with_coordinates_out_of_range(db, superuser_client):
     }
     response = superuser_client.post(BARS_LIST_URL, payload, format='json')
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert Bars.objects.count() == 0
+    assert PullUpBars.objects.count() == 0
 
 
 def test_create_bars_with_blank_values_fail(db, superuser_client):
@@ -25,4 +25,4 @@ def test_create_bars_with_blank_values_fail(db, superuser_client):
     }
     response = superuser_client.post(BARS_LIST_URL, payload, format='json')
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert Bars.objects.count() == 0
+    assert PullUpBars.objects.count() == 0

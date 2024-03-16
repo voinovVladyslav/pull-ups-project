@@ -20,7 +20,7 @@ from drf_spectacular.utils import (
 from core.pagination import StandartResultPagination
 from core.permissions import ReadOnly
 from user.models import User
-from .models import Bars
+from .models import PullUpBars
 from .serializers import BarsSerializer
 
 
@@ -52,7 +52,7 @@ def get_ref_point_from_query_data(value: str) -> Point | None:
     )
 )
 class BarsViewSet(viewsets.ModelViewSet):
-    queryset = Bars.objects.all()
+    queryset = PullUpBars.objects.all()
     serializer_class = BarsSerializer
     pagination_class = StandartResultPagination
     permission_classes = [IsAdminUser | ReadOnly]
@@ -62,7 +62,7 @@ class BarsViewSet(viewsets.ModelViewSet):
 
         if self.request.user.is_authenticated:
             queryset = queryset.annotate(
-                is_favorite=Exists(User.favorite_bars.through.objects.filter(
+                is_favorite=Exists(User.favorite_pullupbars.through.objects.filter(
                     user_id=self.request.user.id,
                     bars_id=OuterRef('pk'),
                 ))
@@ -123,8 +123,8 @@ class BarsViewSet(viewsets.ModelViewSet):
         if not bar_id:
             raise ValidationError({'bar_id': 'this field is required'})
         try:
-            bar = Bars.objects.get(id=bar_id)
-            request.user.favorite_bars.add(bar)
+            bar = PullUpBars.objects.get(id=bar_id)
+            request.user.favorite_pullupbars.add(bar)
             return Response(status=200)
         except Exception:
             raise ValidationError({'bar_id': 'Object does not exists'})
@@ -139,8 +139,8 @@ class BarsViewSet(viewsets.ModelViewSet):
         if not bar_id:
             raise ValidationError({'bar_id': 'this field is required'})
         try:
-            bar = Bars.objects.get(id=bar_id)
-            request.user.favorite_bars.remove(bar)
+            bar = PullUpBars.objects.get(id=bar_id)
+            request.user.favorite_pullupbars.remove(bar)
             return Response(status=200)
         except Exception:
             raise ValidationError({'bar_id': 'Object does not exists'})

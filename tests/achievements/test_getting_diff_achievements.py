@@ -10,7 +10,7 @@ from model_bakery.baker import make
 from tests.counter.urls import get_pull_up_counter_list_url
 
 from user.models import User
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from counter.models import PullUpCounter
 from notifications.models import Notification
 from achievements.helpers.upsert import upsert_achievements
@@ -22,13 +22,13 @@ def test_getting_achievement_for_3_diff_bars(
 ):
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=DIFFERENT_BARS_IN_ONE_DAY)
-    bars = make(Bars, 3)
+    bars = make(PullUpBars, 3)
     main_bar = None
     for bar in bars:
         if main_bar is None:
             main_bar = bar
             continue
-        make(PullUpCounter, reps=10, bar=bar, user=user)
+        make(PullUpCounter, reps=10, pullupbar=bar, user=user)
 
     achievement_title = None
     for achievement in DIFFERENT_BARS_IN_ONE_DAY:
@@ -73,13 +73,13 @@ def test_getting_lower_achievements_if_higher_achieved(
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=DIFFERENT_BARS_IN_ONE_DAY)
 
-    bars = make(Bars, diff_bars)
+    bars = make(PullUpBars, diff_bars)
     main_bar = None
     for bar in bars:
         if main_bar is None:
             main_bar = bar
             continue
-        make(PullUpCounter, reps=5, bar=bar, user=user)
+        make(PullUpCounter, reps=5, pullupbar=bar, user=user)
 
     payload = {
         'reps': 10
@@ -98,7 +98,7 @@ def test_count_only_reps_from_same_day(
 ):
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=DIFFERENT_BARS_IN_ONE_DAY)
-    bars = make(Bars, 3)
+    bars = make(PullUpBars, 3)
     main_bar = None
     dates = [
         make_aware(datetime(2023, 9, 11)),
@@ -109,7 +109,7 @@ def test_count_only_reps_from_same_day(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=10, bar=bar, user=user)
+        counter = make(PullUpCounter, reps=10, pullupbar=bar, user=user)
         counter.created_at = date
         counter.save()
 

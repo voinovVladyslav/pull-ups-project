@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.utils import timezone
 from model_bakery.baker import make
 
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from counter.models import PullUpCounter
 
 from achievements.helpers.check.query import get_current_pullup_streak
@@ -11,13 +11,13 @@ from achievements.helpers.check.query import get_current_pullup_streak
 
 def test_current_streak_for_6_day_streak(db, create_user):
     user = create_user()
-    bar = make(Bars)
+    bar = make(PullUpBars)
     number_of_days = 6
     now = timezone.now()
     starting_point = now - timedelta(days=number_of_days)
 
     for _ in range(number_of_days):
-        counter = make(PullUpCounter, bar=bar, user=user, reps=10)
+        counter = make(PullUpCounter, pullupbar=bar, user=user, reps=10)
         counter.created_at = starting_point
         counter.save()
         starting_point = starting_point + timedelta(days=1)
@@ -32,13 +32,13 @@ def test_current_streak_return_0_when_no_pullups(db, create_user):
 
 def test_count_only_pullups_with_1_rep_and_more(db, create_user):
     user = create_user()
-    bar = make(Bars)
+    bar = make(PullUpBars)
     number_of_days = 6
     now = timezone.now()
     starting_point = now - timedelta(days=number_of_days)
 
     for _ in range(number_of_days):
-        counter = make(PullUpCounter, bar=bar, user=user, reps=0)
+        counter = make(PullUpCounter, pullupbar=bar, user=user, reps=0)
         counter.created_at = starting_point
         counter.save()
         starting_point = starting_point + timedelta(days=1)
@@ -49,7 +49,7 @@ def test_count_only_pullups_with_1_rep_and_more(db, create_user):
 def test_one_day_missing_resets_streak(db, create_user):
     user = create_user()
 
-    bar = make(Bars)
+    bar = make(PullUpBars)
     number_of_days = 10
     now = timezone.now()
     starting_point = now - timedelta(days=number_of_days)
@@ -61,7 +61,7 @@ def test_one_day_missing_resets_streak(db, create_user):
             starting_point = starting_point + timedelta(days=1)
             continue
 
-        counter = make(PullUpCounter, bar=bar, user=user, reps=10)
+        counter = make(PullUpCounter, pullupbar=bar, user=user, reps=10)
         counter.created_at = starting_point
         counter.save()
         starting_point = starting_point + timedelta(days=1)

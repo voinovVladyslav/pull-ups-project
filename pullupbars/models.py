@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.gis.db.models import PointField
 
 
-class Bars(models.Model):
+class PullUpBars(models.Model):
     class Meta:
         verbose_name = 'Pull Up Bars'
         verbose_name_plural = 'Pull Up Bars'

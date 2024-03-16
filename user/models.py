@@ -25,7 +25,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    favorite_bars = models.ManyToManyField('bars.Bars', blank=True)
+    favorite_pullupbars = models.ManyToManyField(
+        'pullupbars.PullUpBars', blank=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = UserManager()

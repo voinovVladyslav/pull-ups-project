@@ -18,7 +18,7 @@ class UserAdmin(BaseUserAdmin):
                 'fields': (
                     'email',
                     'password',
-                    'favorite_bars',
+                    'favorite_pullupbars',
                 )
             }
         ),

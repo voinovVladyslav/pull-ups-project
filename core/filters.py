@@ -6,6 +6,6 @@ class UserFilter(AutocompleteFilter):
     field_name = 'user'
 
 
-class BarFilter(AutocompleteFilter):
+class PullUpBarFilter(AutocompleteFilter):
     title = 'Pull Up Bar'
-    field_name = 'bar'
+    field_name = 'pullupbar'
