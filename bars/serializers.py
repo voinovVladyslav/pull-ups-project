@@ -8,22 +8,10 @@ from rest_framework_gis.fields import GeometryField
 
 from tag.models import Tag
 from tag.serializers import TagSerializer
-from .models import Address, Bars
+from .models import Bars
 
 
 logger = logging.getLogger('db')
-
-
-class AddresSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Address
-        fields = [
-            'country',
-            'city',
-            'street',
-            'number',
-            'postal_code',
-        ]
 
 
 class BarsSerializer(GeoModelSerializer):
