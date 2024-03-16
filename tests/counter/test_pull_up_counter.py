@@ -2,7 +2,7 @@ from rest_framework import status
 from model_bakery.baker import make
 
 from counter.models import PullUpCounter
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from user.models import User
 from .urls import get_pull_up_counter_detail_url, get_pull_up_counter_list_url
 
@@ -10,9 +10,9 @@ from .urls import get_pull_up_counter_detail_url, get_pull_up_counter_list_url
 def test_authentication_required(
     db, api_client, create_user
 ):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user = create_user()
-    make(PullUpCounter, bar=bar, user=user)
+    make(PullUpCounter, pullupbar=bar, user=user)
 
     url = get_pull_up_counter_list_url(bar.id)
     response = api_client.get(url)
@@ -22,11 +22,11 @@ def test_authentication_required(
 def test_return_only_user_related_counter(
     db, superuser_client, superuser_email, create_user
 ):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user = User.objects.get(email=superuser_email)
     second_user = create_user()
-    make(PullUpCounter, 5, user=user, bar=bar)
-    make(PullUpCounter, 5, user=second_user, bar=bar)
+    make(PullUpCounter, 5, user=user, pullupbar=bar)
+    make(PullUpCounter, 5, user=second_user, pullupbar=bar)
     assert PullUpCounter.objects.count() == 10
 
     url = get_pull_up_counter_list_url(bar.id)
@@ -37,7 +37,7 @@ def test_return_only_user_related_counter(
 
 
 def test_create_counter(db, superuser_client, superuser_email):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user = User.objects.get(email=superuser_email)
     payload = {
         'reps': 10,
@@ -50,11 +50,11 @@ def test_create_counter(db, superuser_client, superuser_email):
     counter = PullUpCounter.objects.first()
     assert counter.reps == payload['reps']
     assert counter.user == user
-    assert counter.bar == bar
+    assert counter.pullupbar == bar
 
 
 def test_create_counter_invalid_bars_id(db, superuser_client):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     payload = {
         'reps': 10,
     }
@@ -66,9 +66,9 @@ def test_create_counter_invalid_bars_id(db, superuser_client):
 
 
 def test_update_counter(db, superuser_client, superuser_email):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user = User.objects.get(email=superuser_email)
-    counter = make(PullUpCounter, user=user, bar=bar, reps=10)
+    counter = make(PullUpCounter, user=user, pullupbar=bar, reps=10)
     payload = {
         'reps': 20
     }
@@ -80,10 +80,10 @@ def test_update_counter(db, superuser_client, superuser_email):
 
 
 def test_update_counter_invalid_payload(db, superuser_client, superuser_email):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user = User.objects.get(email=superuser_email)
     reps = 10
-    counter = make(PullUpCounter, user=user, bar=bar, reps=reps)
+    counter = make(PullUpCounter, user=user, pullupbar=bar, reps=reps)
     payload = {
         'reps': 'hello'
     }
@@ -95,9 +95,9 @@ def test_update_counter_invalid_payload(db, superuser_client, superuser_email):
 
 
 def test_delete_counter(db, superuser_client, superuser_email):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user = User.objects.get(email=superuser_email)
-    counter = make(PullUpCounter, user=user, bar=bar)
+    counter = make(PullUpCounter, user=user, pullupbar=bar)
     assert PullUpCounter.objects.count() == 1
 
     url = get_pull_up_counter_detail_url(bar.id, counter.id)
@@ -107,9 +107,9 @@ def test_delete_counter(db, superuser_client, superuser_email):
 
 
 def test_delete_counter_invalid_id(db, superuser_client, superuser_email):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user = User.objects.get(email=superuser_email)
-    counter = make(PullUpCounter, user=user, bar=bar)
+    counter = make(PullUpCounter, user=user, pullupbar=bar)
     assert PullUpCounter.objects.count() == 1
 
     url = get_pull_up_counter_detail_url(bar.id, counter.id + 1)
@@ -121,9 +121,9 @@ def test_delete_counter_invalid_id(db, superuser_client, superuser_email):
 def test_delete_counter_using_different_bars_id_result_in_error(
     db, superuser_client, superuser_email,
 ):
-    bar, bar2 = make(Bars, 2)
+    bar, bar2 = make(PullUpBars, 2)
     user = User.objects.get(email=superuser_email)
-    counter = make(PullUpCounter, user=user, bar=bar)
+    counter = make(PullUpCounter, user=user, pullupbar=bar)
     assert PullUpCounter.objects.count() == 1
 
     url = get_pull_up_counter_detail_url(bar2.id, counter.id)

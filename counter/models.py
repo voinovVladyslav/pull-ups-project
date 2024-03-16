@@ -12,8 +12,12 @@ class BaseCounter(models.Model):
 
 class PullUpCounter(BaseCounter):
     user = models.ForeignKey(
-        'user.User', on_delete=models.CASCADE, related_name='pullup_counter'
+        'user.User',
+        on_delete=models.CASCADE,
+        related_name='pullup_counter',
     )
-    bar = models.ForeignKey(
-        'bars.Bars', on_delete=models.CASCADE, related_name='pullup_counter'
+    pullupbar = models.ForeignKey(
+        'pullupbars.PullUpBars',
+        on_delete=models.CASCADE,
+        related_name='pullup_counter',
     )

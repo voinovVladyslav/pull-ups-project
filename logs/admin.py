@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from core.filters import UserFilter, BarFilter
+from core.filters import UserFilter, PullUpBarFilter
 from .models import LogRecord
 
 
@@ -12,7 +12,7 @@ class LogRecordAdmin(admin.ModelAdmin):
         'level',
         'type',
         'msg',
-        'bar',
+        'pullupbar',
         'user',
     )
     readonly_fields = (
@@ -21,14 +21,14 @@ class LogRecordAdmin(admin.ModelAdmin):
         'type',
         'message',
         'trace',
-        'bar',
+        'pullupbar',
         'user',
     )
     list_filter = (
         'type',
         'level__name',
         UserFilter,
-        BarFilter,
+        PullUpBarFilter,
     )
     search_fields = (
         'message',

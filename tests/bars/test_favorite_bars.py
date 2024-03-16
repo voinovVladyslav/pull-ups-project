@@ -3,7 +3,7 @@ import json
 from rest_framework import status
 from model_bakery.baker import make
 
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from user.models import User
 from .urls import FAVORITE_BARS, ADD_FAVORITE_BARS, REMOVE_FAVORITE_BARS
 
@@ -11,14 +11,14 @@ from .urls import FAVORITE_BARS, ADD_FAVORITE_BARS, REMOVE_FAVORITE_BARS
 def test_list_all_favorite_bars(
     db, superuser_client, superuser_email
 ):
-    bars = make(Bars, 5)
+    bars = make(PullUpBars, 5)
     bar = bars[0]
     bar.title = 'test_title'
     bar.save()
     bars[-1].title = 'custom_title'
     bars[-1].save()
     user = User.objects.get(email=superuser_email)
-    user.favorite_bars.add(bar)
+    user.favorite_pullupbars.add(bar)
 
     response = superuser_client.get(FAVORITE_BARS)
     response_data = json.loads(response.content)['results']
@@ -36,24 +36,24 @@ def test_list_all_favorite_bars_not_allowed_for_guest_users(
 
 
 def test_add_bars_to_favorites(db, superuser_client, superuser_email):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user: User = User.objects.get(email=superuser_email)
-    assert user.favorite_bars.count() == 0
+    assert user.favorite_pullupbars.count() == 0
     payload = {
         'bar_id': bar.id
     }
     response = superuser_client.post(ADD_FAVORITE_BARS, payload)
     assert response.status_code == status.HTTP_200_OK
     user.refresh_from_db()
-    assert user.favorite_bars.count() == 1
+    assert user.favorite_pullupbars.count() == 1
 
 
 def test_add_invalid_bars_id_to_favorites(
     db, superuser_client, superuser_email
 ):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user: User = User.objects.get(email=superuser_email)
-    assert user.favorite_bars.count() == 0
+    assert user.favorite_pullupbars.count() == 0
 
     payload = {
         'bar_id': bar.id + 100
@@ -61,34 +61,34 @@ def test_add_invalid_bars_id_to_favorites(
     response = superuser_client.post(ADD_FAVORITE_BARS, payload)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     user.refresh_from_db()
-    assert user.favorite_bars.count() == 0
+    assert user.favorite_pullupbars.count() == 0
 
 
 def test_remove_bars_from_favorites(db, superuser_client, superuser_email):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user: User = User.objects.get(email=superuser_email)
-    user.favorite_bars.add(bar)
-    assert user.favorite_bars.count() == 1
+    user.favorite_pullupbars.add(bar)
+    assert user.favorite_pullupbars.count() == 1
     payload = {
         'bar_id': bar.id
     }
     response = superuser_client.post(REMOVE_FAVORITE_BARS, payload)
     assert response.status_code == status.HTTP_200_OK
     user.refresh_from_db()
-    assert user.favorite_bars.count() == 0
+    assert user.favorite_pullupbars.count() == 0
 
 
 def test_remove_invalid_bars_id_from_favorites(
     db, superuser_client, superuser_email
 ):
-    bar = make(Bars)
+    bar = make(PullUpBars)
     user: User = User.objects.get(email=superuser_email)
-    user.favorite_bars.add(bar)
-    assert user.favorite_bars.count() == 1
+    user.favorite_pullupbars.add(bar)
+    assert user.favorite_pullupbars.count() == 1
     payload = {
         'bar_id': bar.id + 100
     }
     response = superuser_client.post(REMOVE_FAVORITE_BARS, payload)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     user.refresh_from_db()
-    assert user.favorite_bars.count() == 1
+    assert user.favorite_pullupbars.count() == 1

@@ -7,7 +7,7 @@ from model_bakery.baker import make
 from tests.counter.urls import get_pull_up_counter_list_url
 
 from user.models import User
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from notifications.models import Notification
 from achievements.helpers.upsert import upsert_achievements
 from achievements.constants import PULLUP_ACHIEVEMENTS
@@ -18,7 +18,7 @@ def test_getting_achievement_for_5_pullups(
 ):
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=PULLUP_ACHIEVEMENTS)
-    bar = make(Bars)
+    bar = make(PullUpBars)
 
     for achievement in PULLUP_ACHIEVEMENTS:
         if achievement['type'] == 'pullup' and achievement['threshold'] == 5:
@@ -60,7 +60,7 @@ def test_getting_lower_achievements_if_higher_achieved(
 ):
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=PULLUP_ACHIEVEMENTS)
-    bar = make(Bars)
+    bar = make(PullUpBars)
 
     payload = {
         'reps': reps
@@ -79,7 +79,7 @@ def test_not_getting_same_achievement_twice(
 ):
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=PULLUP_ACHIEVEMENTS)
-    bar = make(Bars)
+    bar = make(PullUpBars)
 
     payload = {
         'reps': 6

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.filters import UserFilter, BarFilter
+from core.filters import UserFilter, PullUpBarFilter
 from .models import PullUpCounter
 
 
@@ -10,11 +10,11 @@ class PullUpCounterAdmin(admin.ModelAdmin):
         'id',
         'reps',
         'user',
-        'bar',
+        'pullupbar',
         'created_at',
     )
 
     list_filter = (
         UserFilter,
-        BarFilter,
+        PullUpBarFilter,
     )

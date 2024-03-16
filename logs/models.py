@@ -51,8 +51,8 @@ class LogRecord(models.Model):
         blank=True,
         null=True,
     )
-    bar = models.ForeignKey(
-        'bars.Bars',
+    pullupbar = models.ForeignKey(
+        'pullupbars.PullUpBars',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,

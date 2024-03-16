@@ -6,7 +6,7 @@ class DatabaseLogHandler(logging.Handler):
     def emit(self, record):
         from .models import LogRecordLevel, LogRecord, LogRecordType
         from user.models import User
-        from bars.models import Bars
+        from pullupbars.models import PullUpBars
         log_record = LogRecord()
 
         if hasattr(record, "type"):
@@ -31,15 +31,15 @@ class DatabaseLogHandler(logging.Handler):
             if user:
                 log_record.user = user
 
-        if hasattr(record, 'bar'):
-            if isinstance(record.bar, Bars):
-                bar = record.bar
+        if hasattr(record, 'pullupbar'):
+            if isinstance(record.pullupbar, PullUpBars):
+                pullupbar = record.pullupbar
             else:
-                bar = Bars.objects.filter(
+                pullupbar = PullUpBars.objects.filter(
                     id=record.bar
                 ).first()
-            if bar:
-                log_record.bar = bar
+            if pullupbar:
+                log_record.pullupbar = pullupbar
 
         log_record.message = record.getMessage()
 

@@ -9,7 +9,7 @@ from drf_spectacular.utils import (
 )
 
 from core.pagination import StandartResultPagination
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from achievements.helpers.check import check_user_achievements
 from .models import PullUpCounter
 from .serializers import PullUpCounterSerializer
@@ -34,12 +34,12 @@ class PullUpCounterViewSet(ModelViewSet):
 
     def get_queryset(self):
         return PullUpCounter.objects.filter(
-            bar=self.kwargs['bar_pk'], user=self.request.user
+            pullupbar=self.kwargs['bar_pk'], user=self.request.user
         ).order_by('-id')
 
     def perform_create(self, serializer):
-        bar = Bars.objects.filter(id=self.kwargs['bar_pk']).first()
+        bar = PullUpBars.objects.filter(id=self.kwargs['bar_pk']).first()
         if not bar:
             raise ValidationError({'bar_id': 'bars does not exists'})
-        serializer.save(user=self.request.user, bar=bar)
+        serializer.save(user=self.request.user, pullupbar=bar)
         check_user_achievements(self.request.user)

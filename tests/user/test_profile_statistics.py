@@ -6,7 +6,7 @@ from django.utils import timezone
 from model_bakery.baker import make
 
 from user.models import User
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from counter.models import PullUpCounter
 from .urls import STATS_URL
 
@@ -28,8 +28,8 @@ def test_stats_fields(db, authenticated_client: APIClient):
 
 def test_calculated_stats(db, authenticated_client: APIClient, user_email):
     user = User.objects.get(email=user_email)
-    bar = make(Bars)
-    make(PullUpCounter, 2, user=user, bar=bar, reps=33)
+    bar = make(PullUpBars)
+    make(PullUpCounter, 2, user=user, pullupbar=bar, reps=33)
     response = authenticated_client.get(STATS_URL)
 
     assert response.status_code == status.HTTP_200_OK
@@ -53,10 +53,10 @@ def test_streak_0_if_no_pullups_yesterday(
     db, authenticated_client: APIClient, user_email
 ):
     user = User.objects.get(email=user_email)
-    bar = make(Bars)
+    bar = make(PullUpBars)
     two_days_ago = timezone.now() - timedelta(days=2)
     counter = make(
-        PullUpCounter, user=user, bar=bar, reps=33,
+        PullUpCounter, user=user, pullupbar=bar, reps=33,
     )
     counter.created_at = two_days_ago
     counter.save()
@@ -70,10 +70,10 @@ def test_streak_1_if_last_pull_up_yesterday(
     db, authenticated_client: APIClient, user_email
 ):
     user = User.objects.get(email=user_email)
-    bar = make(Bars)
+    bar = make(PullUpBars)
     yesterday = timezone.now() - timedelta(days=1)
     counter = make(
-        PullUpCounter, user=user, bar=bar, reps=33,
+        PullUpCounter, user=user, pullupbar=bar, reps=33,
     )
     counter.created_at = yesterday
     counter.save()

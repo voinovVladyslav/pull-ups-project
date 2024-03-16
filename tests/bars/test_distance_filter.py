@@ -3,13 +3,13 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from model_bakery.baker import make
 
-from bars.models import Bars
-from bars.serializers import BarsSerializer
+from pullupbars.models import PullUpBars
+from pullupbars.serializers import BarsSerializer
 from .urls import BARS_LIST_URL
 
 
 def test_filter_does_not_apply_if_data_incorrect(db, api_client: APIClient):
-    make(Bars, 3)
+    make(PullUpBars, 3)
     default_response = api_client.get(BARS_LIST_URL)
     url = BARS_LIST_URL + '?ref_point=20.20.43'
     filter_response = api_client.get(url)
@@ -22,9 +22,9 @@ def test_filter_works_correctly(db, api_client: APIClient):
     point2 = Point((20, 20), srid=4326)
     point3 = Point((80, 80), srid=4326)
 
-    bars1 = make(Bars, location=point1)
-    bars2 = make(Bars, location=point2)
-    bars3 = make(Bars, location=point3)
+    bars1 = make(PullUpBars, location=point1)
+    bars2 = make(PullUpBars, location=point2)
+    bars3 = make(PullUpBars, location=point3)
 
     url = BARS_LIST_URL + '?ref_point=20.120;20.43'
     default_response = api_client.get(BARS_LIST_URL)

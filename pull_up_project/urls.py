@@ -20,7 +20,7 @@ urlpatterns = [
 
     # api
     path('api/', include('user.urls')),
-    path('api/', include('bars.urls')),
+    path('api/', include('pullupbars.urls')),
     path('api/', include('achievements.urls')),
     path('api/', include('notifications.urls')),
 ]

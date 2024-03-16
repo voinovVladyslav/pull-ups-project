@@ -10,7 +10,7 @@ from model_bakery.baker import make
 from tests.counter.urls import get_pull_up_counter_list_url
 
 from user.models import User
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from counter.models import PullUpCounter
 from notifications.models import Notification
 from achievements.helpers.upsert import upsert_achievements
@@ -24,13 +24,13 @@ def test_getting_achievement_for_7_day_streak(
     upsert_achievements(
         user, achievements=PULL_UP_DAY_STREAK_ACHIEVEMENTS
     )
-    bar = make(Bars)
+    bar = make(PullUpBars)
     number_of_days = 6
     now = timezone.now()
     starting_point = now - timedelta(days=number_of_days)
 
     for _ in range(number_of_days):
-        counter = make(PullUpCounter, bar=bar, user=user, reps=10)
+        counter = make(PullUpCounter, pullupbar=bar, user=user, reps=10)
         counter.created_at = starting_point
         counter.save()
         starting_point = starting_point + timedelta(days=1)
@@ -76,12 +76,12 @@ def test_getting_lower_achievements_if_higher_achieved(
     upsert_achievements(
         user, achievements=PULL_UP_DAY_STREAK_ACHIEVEMENTS
     )
-    bar = make(Bars)
+    bar = make(PullUpBars)
     now = timezone.now()
     starting_point = now - timedelta(days=streak - 1)
 
     for _ in range(streak - 1):
-        counter = make(PullUpCounter, bar=bar, user=user, reps=10)
+        counter = make(PullUpCounter, pullupbar=bar, user=user, reps=10)
         counter.created_at = starting_point
         counter.save()
         starting_point = starting_point + timedelta(days=1)
@@ -105,13 +105,13 @@ def test_0_reps_does_not_included(
     upsert_achievements(
         user, achievements=PULL_UP_DAY_STREAK_ACHIEVEMENTS
     )
-    bar = make(Bars)
+    bar = make(PullUpBars)
     number_of_days = 6
     now = timezone.now()
     starting_point = now - timedelta(days=number_of_days)
 
     for _ in range(number_of_days):
-        counter = make(PullUpCounter, bar=bar, user=user, reps=0)
+        counter = make(PullUpCounter, pullupbar=bar, user=user, reps=0)
         counter.created_at = starting_point
         counter.save()
         starting_point = starting_point + timedelta(days=1)
@@ -143,7 +143,7 @@ def test_1_missing_day_reset_streak(
     upsert_achievements(
         user, achievements=PULL_UP_DAY_STREAK_ACHIEVEMENTS
     )
-    bar = make(Bars)
+    bar = make(PullUpBars)
     number_of_days = 10
     now = timezone.now()
     starting_point = now - timedelta(days=number_of_days)
@@ -154,7 +154,7 @@ def test_1_missing_day_reset_streak(
             starting_point = starting_point + timedelta(days=1)
             continue
 
-        counter = make(PullUpCounter, bar=bar, user=user, reps=10)
+        counter = make(PullUpCounter, pullupbar=bar, user=user, reps=10)
         counter.created_at = starting_point
         counter.save()
         starting_point = starting_point + timedelta(days=1)

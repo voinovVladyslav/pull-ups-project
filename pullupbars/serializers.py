@@ -5,7 +5,7 @@ from rest_framework import serializers
 from rest_framework_gis.serializers import GeoModelSerializer
 from rest_framework_gis.fields import GeometryField
 
-from .models import Bars
+from .models import PullUpBars
 
 
 logger = logging.getLogger('db')
@@ -16,7 +16,7 @@ class BarsSerializer(GeoModelSerializer):
     is_favorite = serializers.BooleanField(required=False, read_only=True)
 
     class Meta:
-        model = Bars
+        model = PullUpBars
         geo_field = 'location'
         fields = [
             'id',
@@ -39,7 +39,7 @@ class BarsSerializer(GeoModelSerializer):
         return value
 
     def create(self, validated_data):
-        bars = Bars.objects.create(**validated_data)
+        bars = PullUpBars.objects.create(**validated_data)
         user = None
         request = self.context.get("request")
         if request and hasattr(request, "user"):
@@ -48,6 +48,6 @@ class BarsSerializer(GeoModelSerializer):
         logger.info(
             'Created bars: %s',
             model_to_dict(bars),
-            extra=dict(type='bars_create', bar=bars, user=user)
+            extra=dict(type='bars_create', pullupbar=bars, user=user)
         )
         return bars

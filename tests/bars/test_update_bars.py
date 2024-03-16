@@ -2,13 +2,13 @@ from django.contrib.gis.geos import Point
 from rest_framework import status
 from model_bakery.baker import make
 
-from bars.models import Bars
+from pullupbars.models import PullUpBars
 from .urls import get_bars_detail_url
 
 
 def test_update_bars_with_empty_values_fail(db, superuser_client):
-    bars = make(Bars)
-    assert Bars.objects.count() == 1
+    bars = make(PullUpBars)
+    assert PullUpBars.objects.count() == 1
 
     url = get_bars_detail_url(bars.id)
     payload = {
@@ -24,9 +24,9 @@ def test_update_bars_with_empty_values_fail(db, superuser_client):
 def test_partial_update_location_only_success(
     db, superuser_client
 ):
-    bars = make(Bars)
+    bars = make(PullUpBars)
 
-    assert Bars.objects.count() == 1
+    assert PullUpBars.objects.count() == 1
 
     url = get_bars_detail_url(bars.id)
     x = 30.234
@@ -46,9 +46,9 @@ def test_partial_update_location_only_success(
 
 
 def test_update_with_coordinates_out_of_range_fail(db, superuser_client):
-    bars = make(Bars, location=Point(0, 0))
+    bars = make(PullUpBars, location=Point(0, 0))
 
-    assert Bars.objects.count() == 1
+    assert PullUpBars.objects.count() == 1
 
     url = get_bars_detail_url(bars.id)
     x = 300
