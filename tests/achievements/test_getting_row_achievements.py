@@ -58,7 +58,7 @@ def test_getting_achievement_for_7_day_streak(
 
 
 @pytest.mark.parametrize(
-    'streak,done',
+    ('streak', 'done'),
     [
         (5, 0),
         (7, 1),

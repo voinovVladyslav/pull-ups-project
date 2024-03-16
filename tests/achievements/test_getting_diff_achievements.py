@@ -28,7 +28,7 @@ def test_getting_achievement_for_3_diff_bars(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=10, bar=bar, user=user)
+        make(PullUpCounter, reps=10, bar=bar, user=user)
 
     achievement_title = None
     for achievement in DIFFERENT_BARS_IN_ONE_DAY:
@@ -53,7 +53,7 @@ def test_getting_achievement_for_3_diff_bars(
 
 
 @pytest.mark.parametrize(
-    'diff_bars,done',
+    ('diff_bars', 'done'),
     [
         (2, 0),
         (3, 1),
@@ -79,7 +79,7 @@ def test_getting_lower_achievements_if_higher_achieved(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=5, bar=bar, user=user)
+        make(PullUpCounter, reps=5, bar=bar, user=user)
 
     payload = {
         'reps': 10

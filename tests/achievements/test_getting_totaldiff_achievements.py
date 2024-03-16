@@ -27,7 +27,7 @@ def test_getting_achievement_for_5_different_bars(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=10, bar=bar, user=user)
+        make(PullUpCounter, reps=10, bar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS:
@@ -52,7 +52,7 @@ def test_getting_achievement_for_5_different_bars(
 
 
 @pytest.mark.parametrize(
-    'different_bars,done',
+    ('different_bars', 'done'),
     [
         (3, 0),
         (5, 1),
@@ -77,7 +77,7 @@ def test_getting_lower_achievements_if_higher_achieved(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=5, bar=bar, user=user)
+        make(PullUpCounter, reps=5, bar=bar, user=user)
 
     payload = {
         'reps': 10
@@ -104,7 +104,7 @@ def test_not_getting_same_achievement_twice(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=10, bar=bar, user=user)
+        make(PullUpCounter, reps=10, bar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS:
@@ -144,7 +144,7 @@ def test_0_reps_does_not_included(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=0, bar=bar, user=user)
+        make(PullUpCounter, reps=0, bar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS:

@@ -20,7 +20,7 @@ def test_getting_achievement_for_100_total_pullups(
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=TOTAL_PULL_UP_ACHIEVEMENTS)
     bar = make(Bars)
-    counters = make(PullUpCounter, 11, reps=9, bar=bar, user=user)
+    make(PullUpCounter, 11, reps=9, bar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_PULL_UP_ACHIEVEMENTS:
@@ -45,7 +45,7 @@ def test_getting_achievement_for_100_total_pullups(
 
 
 @pytest.mark.parametrize(
-    'reps_total,done',
+    ('reps_total', 'done'),
     [
         (50, 0),
         (99, 1),
@@ -64,7 +64,7 @@ def test_getting_lower_achievements_if_higher_achieved(
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=TOTAL_PULL_UP_ACHIEVEMENTS)
     bar = make(Bars)
-    counter = make(PullUpCounter, reps=reps_total, bar=bar, user=user)
+    make(PullUpCounter, reps=reps_total, bar=bar, user=user)
 
     payload = {
         'reps': 10
@@ -84,7 +84,7 @@ def test_not_getting_same_achievement_twice(
     user = User.objects.get(email=user_email)
     upsert_achievements(user, achievements=TOTAL_PULL_UP_ACHIEVEMENTS)
     bar = make(Bars)
-    counters = make(PullUpCounter, 11, reps=9, bar=bar, user=user)
+    make(PullUpCounter, 11, reps=9, bar=bar, user=user)
 
     payload = {
         'reps': 6

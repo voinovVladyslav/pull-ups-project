@@ -39,7 +39,7 @@ def test_getting_achievement_for_5_pullups(
 
 
 @pytest.mark.parametrize(
-    'reps,done',
+    ('reps', 'done'),
     [
         (3, 0),
         (5, 1),
