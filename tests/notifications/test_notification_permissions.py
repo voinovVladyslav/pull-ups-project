@@ -20,7 +20,7 @@ def test_authenticated_user_access_allowed(
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code',
+    ('method_name', 'response_code'),
     [
         ('get', status.HTTP_200_OK),
         ('post', status.HTTP_405_METHOD_NOT_ALLOWED),

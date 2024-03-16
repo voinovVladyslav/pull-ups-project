@@ -11,7 +11,7 @@ from .urls import NOTIFICATIONS_URL
 
 
 @pytest.mark.parametrize(
-    'count,unread_value',
+    ('count', 'unread_value'),
     [
         (3, 'true'),
         (5, 'false'),
