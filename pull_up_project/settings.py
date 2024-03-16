@@ -220,7 +220,6 @@ GRAPH_MODELS = {
     'app_labels': [
         'user',
         'bars',
-        'tag',
         'logs',
         'counter',
         'achievements',

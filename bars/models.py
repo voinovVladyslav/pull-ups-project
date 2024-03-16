@@ -16,7 +16,6 @@ class Bars(models.Model):
     location = PointField(
         null=True, blank=True, srid=4326, serialize=True, geography=True
     )
-    tags = models.ManyToManyField('tag.Tag', blank=True)
 
     def __str__(self):
         return f'Pull bar #{self.id}'
