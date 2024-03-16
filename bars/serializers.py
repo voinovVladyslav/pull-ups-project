@@ -2,7 +2,6 @@ import logging
 
 from django.forms.models import model_to_dict
 from rest_framework import serializers
-from rest_framework.fields import empty
 from rest_framework_gis.serializers import GeoModelSerializer
 from rest_framework_gis.fields import GeometryField
 

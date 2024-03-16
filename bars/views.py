@@ -6,7 +6,6 @@ from django.db.models import OuterRef, Exists
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from rest_framework import viewsets
-from rest_framework import generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -127,7 +126,7 @@ class BarsViewSet(viewsets.ModelViewSet):
             bar = Bars.objects.get(id=bar_id)
             request.user.favorite_bars.add(bar)
             return Response(status=200)
-        except Exception as e:
+        except Exception:
             raise ValidationError({'bar_id': 'Object does not exists'})
 
     @action(
@@ -143,5 +142,5 @@ class BarsViewSet(viewsets.ModelViewSet):
             bar = Bars.objects.get(id=bar_id)
             request.user.favorite_bars.remove(bar)
             return Response(status=200)
-        except Exception as e:
+        except Exception:
             raise ValidationError({'bar_id': 'Object does not exists'})
