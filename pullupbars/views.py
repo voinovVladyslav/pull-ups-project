@@ -94,7 +94,9 @@ class BarsViewSet(viewsets.ModelViewSet):
         logger.info(
             'Updated bars: %s',
             model_to_dict(bars),
-            extra=dict(type='bars_update', pullupbar=bars, user=self.request.user)
+            extra=dict(
+                type='bars_update', pullupbar=bars, user=self.request.user
+            )
         )
 
     @action(
