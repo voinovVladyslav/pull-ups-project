@@ -4,13 +4,13 @@ import pytest
 from rest_framework import status
 from model_bakery.baker import make
 
-from bars.models import Address, Bars
+from bars.models import Bars
 from user.models import User
 from tests.fixtures import superuser_client, api_client
 from tests.user.fixtures import (
     create_superuser, superuser_email, superuser_password
 )
-from .fixtures import bars_payload, address_payload
+from .fixtures import bars_payload
 from .urls import FAVORITE_BARS, ADD_FAVORITE_BARS, REMOVE_FAVORITE_BARS
 
 
