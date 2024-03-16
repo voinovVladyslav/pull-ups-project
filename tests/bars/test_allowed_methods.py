@@ -6,7 +6,7 @@ from .urls import BARS_LIST_URL, get_bars_detail_url
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code',
+    ('method_name', 'response_code'),
     [
         ('get', status.HTTP_200_OK),
         ('post', status.HTTP_400_BAD_REQUEST),
@@ -30,7 +30,7 @@ def test_only_get_post_allowed_for_list_view(
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code',
+    ('method_name', 'response_code'),
     [
         ('get', status.HTTP_404_NOT_FOUND),
         ('post', status.HTTP_405_METHOD_NOT_ALLOWED),

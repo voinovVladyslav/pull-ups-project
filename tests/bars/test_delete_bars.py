@@ -1,4 +1,3 @@
-import pytest
 from rest_framework import status
 from model_bakery.baker import make
 

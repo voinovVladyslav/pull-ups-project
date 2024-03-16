@@ -6,7 +6,6 @@ from bars.models import Bars
 from .urls import get_bars_detail_url
 
 
-
 def test_update_bars_with_empty_values_fail(db, superuser_client):
     bars = make(Bars)
     assert Bars.objects.count() == 1

@@ -13,7 +13,7 @@ def test_log_record_for_bars_create(
     user = User.objects.get(email=superuser_email)
     assert LogRecord.objects.count() == 0
     assert Bars.objects.count() == 0
-    response = superuser_client.post(
+    superuser_client.post(
         BARS_LIST_URL, bars_payload, format='json'
     )
     assert Bars.objects.count() == 1
@@ -27,10 +27,9 @@ def test_log_record_for_bars_create(
 def test_log_record_not_created_if_invalid_payload(
     db, superuser_client, superuser_email
 ):
-    user = User.objects.get(email=superuser_email)
     assert LogRecord.objects.count() == 0
     assert Bars.objects.count() == 0
-    response = superuser_client.post(
+    superuser_client.post(
         BARS_LIST_URL, {'name': 'test'}, format='json'
     )
     assert Bars.objects.count() == 0
@@ -47,7 +46,7 @@ def test_log_record_created_if_bars_updated(
     assert LogRecord.objects.count() == 0
 
     url = get_bars_detail_url(bars.id)
-    response = superuser_client.patch(url, bars_payload, format='json')
+    superuser_client.patch(url, bars_payload, format='json')
     assert Bars.objects.count() == 1
     assert LogRecord.objects.count() == 1
     log = LogRecord.objects.first()
@@ -58,7 +57,6 @@ def test_log_record_created_if_bars_updated(
 def test_log_record_not_created_if_failed_to_update_bars(
     db, superuser_client, superuser_email, bars_payload,
 ):
-    user = User.objects.get(email=superuser_email)
     bars = make(Bars)
 
     assert Bars.objects.count() == 1
@@ -81,7 +79,7 @@ def test_log_record_created_if_bars_was_deleted(
     assert Bars.objects.count() == 1
 
     url = get_bars_detail_url(bars.id)
-    response = superuser_client.delete(url, format='json')
+    superuser_client.delete(url, format='json')
     assert Bars.objects.count() == 0
     assert LogRecord.objects.count() == 1
     log = LogRecord.objects.first()
@@ -97,6 +95,6 @@ def test_log_record_not_created_if_failed_to_delete_bars(
     assert LogRecord.objects.count() == 0
 
     url = get_bars_detail_url(bars.id + 1)
-    response = superuser_client.delete(url, format='json')
+    superuser_client.delete(url, format='json')
     assert Bars.objects.count() == 1
     assert LogRecord.objects.count() == 0
