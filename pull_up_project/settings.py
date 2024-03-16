@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     # local
     'user',
     'bars',
-    'tag',
+    # 'tag',
     'logs',
     'counter',
     'achievements',
