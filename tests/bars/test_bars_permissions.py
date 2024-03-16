@@ -3,14 +3,10 @@ from rest_framework import status
 
 
 from .urls import BARS_LIST_URL, get_bars_detail_url
-from tests.user.fixtures import (
-    user_email, user_password, create_user
-)
-from tests.fixtures import authenticated_client, api_client
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code',
+    ('method_name', 'response_code'),
     [
         ('get', status.HTTP_200_OK),
         ('post', status.HTTP_403_FORBIDDEN),
@@ -34,7 +30,7 @@ def test_only_get_allowed_for_list_view_for_authenticated_user(
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code',
+    ('method_name', 'response_code'),
     [
         ('get', status.HTTP_404_NOT_FOUND),
         ('post', status.HTTP_403_FORBIDDEN),
@@ -60,7 +56,7 @@ def test_only_get_allowed_for_authenticated_user(
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code',
+    ('method_name', 'response_code'),
     [
         ('get', status.HTTP_200_OK),
         ('post', status.HTTP_401_UNAUTHORIZED),
@@ -84,7 +80,7 @@ def test_only_get_allowed_for_list_view_for_unauthenticated_user(
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code',
+    ('method_name', 'response_code'),
     [
         ('get', status.HTTP_404_NOT_FOUND),
         ('post', status.HTTP_401_UNAUTHORIZED),

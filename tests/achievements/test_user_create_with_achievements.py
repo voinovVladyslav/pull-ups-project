@@ -1,12 +1,8 @@
-import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
 
-from tests.fixtures import api_client
-from tests.user.fixtures import user_email, user_password
 from tests.user.urls import CREATE_USER_URL
-from .fixtures import number_of_achievemnts
 
 
 def test_user_created_with_all_achievements_linked(

@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("tag", "0001_initial"),
         ("bars", "0002_alter_address_options_alter_bars_options_and_more"),
     ]
 

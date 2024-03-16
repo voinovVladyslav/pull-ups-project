@@ -7,8 +7,6 @@ from rest_framework.test import APIClient
 from django.utils.timezone import make_aware
 from model_bakery.baker import make
 
-from tests.fixtures import api_client, authenticated_client
-from tests.user.fixtures import create_user, user_email, user_password
 from tests.counter.urls import get_pull_up_counter_list_url
 
 from user.models import User
@@ -30,7 +28,7 @@ def test_getting_achievement_for_3_diff_bars(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=10, bar=bar, user=user)
+        make(PullUpCounter, reps=10, bar=bar, user=user)
 
     achievement_title = None
     for achievement in DIFFERENT_BARS_IN_ONE_DAY:
@@ -55,7 +53,7 @@ def test_getting_achievement_for_3_diff_bars(
 
 
 @pytest.mark.parametrize(
-    'diff_bars,done',
+    ('diff_bars', 'done'),
     [
         (2, 0),
         (3, 1),
@@ -81,7 +79,7 @@ def test_getting_lower_achievements_if_higher_achieved(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=5, bar=bar, user=user)
+        make(PullUpCounter, reps=5, bar=bar, user=user)
 
     payload = {
         'reps': 10

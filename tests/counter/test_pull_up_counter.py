@@ -1,17 +1,9 @@
-import json
-
-import pytest
 from rest_framework import status
 from model_bakery.baker import make
 
 from counter.models import PullUpCounter
 from bars.models import Bars
 from user.models import User
-from tests.fixtures import superuser_client, api_client
-from tests.user.fixtures import (
-    create_superuser, superuser_email, superuser_password,
-    user_email, user_password, create_user,
-)
 from .urls import get_pull_up_counter_detail_url, get_pull_up_counter_list_url
 
 
@@ -20,7 +12,7 @@ def test_authentication_required(
 ):
     bar = make(Bars)
     user = create_user()
-    count = make(PullUpCounter, bar=bar, user=user)
+    make(PullUpCounter, bar=bar, user=user)
 
     url = get_pull_up_counter_list_url(bar.id)
     response = api_client.get(url)
@@ -33,8 +25,8 @@ def test_return_only_user_related_counter(
     bar = make(Bars)
     user = User.objects.get(email=superuser_email)
     second_user = create_user()
-    counters = make(PullUpCounter, 5, user=user, bar=bar)
-    second_user_counters = make(PullUpCounter, 5, user=second_user, bar=bar)
+    make(PullUpCounter, 5, user=user, bar=bar)
+    make(PullUpCounter, 5, user=second_user, bar=bar)
     assert PullUpCounter.objects.count() == 10
 
     url = get_pull_up_counter_list_url(bar.id)

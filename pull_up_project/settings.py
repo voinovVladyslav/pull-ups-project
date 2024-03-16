@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     # local
     'user',
     'bars',
-    'tag',
+    # 'tag',
     'logs',
     'counter',
     'achievements',
@@ -220,7 +220,6 @@ GRAPH_MODELS = {
     'app_labels': [
         'user',
         'bars',
-        'tag',
         'logs',
         'counter',
         'achievements',

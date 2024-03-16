@@ -3,8 +3,6 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from model_bakery.baker import make
 
-from tests.fixtures import authenticated_client, api_client
-from tests.user.fixtures import create_user, user_email, user_password
 from .urls import RESET_ACHIEVEMENTS_URL, get_reset_achievement_detail_url
 
 from achievements.models import Achievement

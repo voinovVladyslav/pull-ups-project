@@ -6,8 +6,6 @@ from model_bakery.baker import make
 
 from user.models import User
 from notifications.models import Notification
-from tests.fixtures import api_client, authenticated_client
-from tests.user.fixtures import create_user, user_email, user_password
 from .urls import NOTIFICATIONS_URL
 
 

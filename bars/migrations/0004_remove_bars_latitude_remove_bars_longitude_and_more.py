@@ -7,7 +7,6 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tag', '0002_alter_tag_name'),
         ('bars', '0003_bars_tags'),
     ]
 

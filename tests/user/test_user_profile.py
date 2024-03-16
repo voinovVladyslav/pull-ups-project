@@ -2,9 +2,7 @@ import pytest
 from rest_framework import status
 from django.contrib.auth import get_user_model
 
-from .fixtures import create_user, user_email, user_password
 from .urls import ME_URL
-from tests.fixtures import api_client, authenticated_client
 
 
 def test_auth_required_for_profile_access(db, api_client):
@@ -71,7 +69,7 @@ def test_update_password_only_successfully(
     assert user.check_password(new_password)
 
 
-def test_update_password_only_successfully(
+def test_update_password_only_error(
         db, authenticated_client, user_email, user_password, create_user
 ):
     user = get_user_model().objects.get(email=user_email)
@@ -103,7 +101,7 @@ def test_update_email_and_password_success(
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code',
+    ('method_name', 'response_code'),
     [
         ('get', status.HTTP_200_OK),
         ('put', status.HTTP_200_OK),

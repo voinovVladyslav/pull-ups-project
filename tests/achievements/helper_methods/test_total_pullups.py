@@ -2,9 +2,6 @@ import pytest
 
 from model_bakery.baker import make
 
-from tests.user.fixtures import create_user, user_email, user_password
-
-from user.models import User
 from bars.models import Bars
 from counter.models import PullUpCounter
 
@@ -23,7 +20,7 @@ from achievements.helpers.check.query import get_total_pullups
 def test_different_total_values(db, create_user, reps_total):
     user = create_user()
     bar = make(Bars)
-    counter = make(PullUpCounter, reps=reps_total, bar=bar, user=user)
+    make(PullUpCounter, reps=reps_total, bar=bar, user=user)
 
     assert get_total_pullups(user) == reps_total
 

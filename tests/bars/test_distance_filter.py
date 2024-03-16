@@ -1,4 +1,3 @@
-import pytest
 from django.contrib.gis.geos import Point
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -6,7 +5,6 @@ from model_bakery.baker import make
 
 from bars.models import Bars
 from bars.serializers import BarsSerializer
-from tests.fixtures import api_client
 from .urls import BARS_LIST_URL
 
 

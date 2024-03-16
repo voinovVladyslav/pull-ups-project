@@ -2,10 +2,7 @@ import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import get_user_model
 
-from tests.fixtures import api_client
-from .fixtures import user_email, user_password, create_user
 from .urls import LOGIN_USER_URL
 
 
@@ -46,7 +43,7 @@ def test_login_with_missing_email_or_password(
 
 
 @pytest.mark.parametrize(
-    'method_name,response_code',
+    ('method_name', 'response_code'),
     [
         ('get', status.HTTP_405_METHOD_NOT_ALLOWED),
         ('put', status.HTTP_405_METHOD_NOT_ALLOWED),

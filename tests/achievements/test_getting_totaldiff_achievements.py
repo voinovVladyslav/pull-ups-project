@@ -4,10 +4,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from model_bakery.baker import make
 
-from tests.fixtures import api_client, authenticated_client
-from tests.user.fixtures import create_user, user_email, user_password
 from tests.counter.urls import get_pull_up_counter_list_url
-from .urls import ACHIEVEMENTS_LIST_URL
 
 from user.models import User
 from bars.models import Bars
@@ -30,7 +27,7 @@ def test_getting_achievement_for_5_different_bars(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=10, bar=bar, user=user)
+        make(PullUpCounter, reps=10, bar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS:
@@ -55,7 +52,7 @@ def test_getting_achievement_for_5_different_bars(
 
 
 @pytest.mark.parametrize(
-    'different_bars,done',
+    ('different_bars', 'done'),
     [
         (3, 0),
         (5, 1),
@@ -80,7 +77,7 @@ def test_getting_lower_achievements_if_higher_achieved(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=5, bar=bar, user=user)
+        make(PullUpCounter, reps=5, bar=bar, user=user)
 
     payload = {
         'reps': 10
@@ -107,7 +104,7 @@ def test_not_getting_same_achievement_twice(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=10, bar=bar, user=user)
+        make(PullUpCounter, reps=10, bar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS:
@@ -147,7 +144,7 @@ def test_0_reps_does_not_included(
         if main_bar is None:
             main_bar = bar
             continue
-        counter = make(PullUpCounter, reps=0, bar=bar, user=user)
+        make(PullUpCounter, reps=0, bar=bar, user=user)
 
     achievement_title = None
     for achievement in TOTAL_DIFFERENT_PULL_UP_BARS_ACHIEVEMENTS:

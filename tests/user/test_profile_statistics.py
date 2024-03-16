@@ -1,21 +1,17 @@
 from datetime import timedelta
 
-import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
-from django.contrib.auth import get_user_model
 from django.utils import timezone
 from model_bakery.baker import make
 
 from user.models import User
 from bars.models import Bars
 from counter.models import PullUpCounter
-from tests.fixtures import api_client, authenticated_client
-from .fixtures import user_email, user_password, create_user
 from .urls import STATS_URL
 
 
-def test_stats_fields(db, authenticated_client: APIClient, user_email):
+def test_stats_fields(db, authenticated_client: APIClient):
     response = authenticated_client.get(STATS_URL)
     assert response.status_code == status.HTTP_200_OK
     fields = [
@@ -33,7 +29,7 @@ def test_stats_fields(db, authenticated_client: APIClient, user_email):
 def test_calculated_stats(db, authenticated_client: APIClient, user_email):
     user = User.objects.get(email=user_email)
     bar = make(Bars)
-    counter = make(PullUpCounter, 2, user=user, bar=bar, reps=33)
+    make(PullUpCounter, 2, user=user, bar=bar, reps=33)
     response = authenticated_client.get(STATS_URL)
 
     assert response.status_code == status.HTTP_200_OK
@@ -46,10 +42,7 @@ def test_calculated_stats(db, authenticated_client: APIClient, user_email):
     assert data['bars_visited_today'] == 1
 
 
-def test_no_pullups_means_0_streak(
-    db, authenticated_client: APIClient, user_email
-):
-    user = User.objects.get(email=user_email)
+def test_no_pullups_means_0_streak(db, authenticated_client: APIClient):
     response = authenticated_client.get(STATS_URL)
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
