@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'achievements',
     'notifications',
     'core',
+    'training_ground',
 ]
 
 MIDDLEWARE = [
