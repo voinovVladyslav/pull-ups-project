@@ -28,6 +28,11 @@ from .serializers import TrainingGroundSerializer
                 type=str,
                 description='Coordinates in format "longitude;latitude"',
             ),
+            OpenApiParameter(
+                name='is_favorite',
+                type=bool,
+                description='Show only favorite training grounds',
+            )
         ]
     )
 )
@@ -64,6 +69,10 @@ class TrainingGroundViewSet(viewsets.ModelViewSet):
             ).order_by(
                 'distance'
             )
+
+        is_favorite = params.get('is_favorite')
+        if is_favorite == 'true':
+            qs = qs.filter(is_favorite=True)
         return qs
 
     @staticmethod
