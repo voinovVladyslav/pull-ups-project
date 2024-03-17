@@ -10,7 +10,7 @@ class TrainingGround(models.Model):
     location = PointField(
         srid=4326, serialize=True, geography=True
     )
-    pullupbar = models.ForeignKey(
+    pullupbar = models.OneToOneField(
         'pullupbars.PullUpBars',
         on_delete=models.SET_NULL,
         null=True,
