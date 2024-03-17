@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+from django.db.models import OuterRef, Exists
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from drf_spectacular.utils import (
@@ -12,6 +13,7 @@ from drf_spectacular.utils import (
     OpenApiParameter,
 )
 
+from user.models import User
 from core.pagination import StandartResultPagination
 from core.permissions import ReadOnly
 from .models import TrainingGround
@@ -39,12 +41,20 @@ class TrainingGroundViewSet(viewsets.ModelViewSet):
         qs = super().get_queryset()
         qs = qs.order_by('-id')
         if self.request.user.is_authenticated:
-            qs = self.annotate_favorites(qs)
+            qs = self.annotate_favorites(qs, self.request.user.id)
+        qs = self.apply_query_params(qs, self.request.query_params)
         return qs
 
     @staticmethod
-    def annotate_favorites(qs):
-        return qs
+    def annotate_favorites(qs, user_id: int):
+        return qs.annotate(
+            is_favorite=Exists(
+                User.favorite_training_grounds.through.objects.filter(
+                    user_id=user_id,
+                    trainingground_id=OuterRef('pk'),
+                )
+            )
+        )
 
     def apply_query_params(self, qs, params: dict):
         ref_point = self.get_ref_point(params.get('ref_point'))

@@ -7,14 +7,19 @@ from .models import TrainingGround
 
 class TrainingGroundSerializer(GeoModelSerializer):
     location = GeometryField()
+    is_favorite = serializers.BooleanField(required=False, read_only=True)
 
     class Meta:
         model = TrainingGround
         geo_field = 'location'
         fields = [
             'id',
+            'is_favorite',
             'location',
             'pullupbar',
+        ]
+        read_only_fields = [
+            'id',
         ]
 
     def validate_location(self, value):
