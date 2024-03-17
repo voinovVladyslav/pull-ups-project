@@ -11,13 +11,12 @@ router = routers.DefaultRouter()
 router.register('pullupbars', views.BarsViewSet, 'pullupbars')
 
 pullupbars_counter_router = routers.NestedSimpleRouter(
-    router, 'pullupbars', lookup='bar'
+    router, 'pullupbars', lookup='pullupbar'
 )
 pullupbars_counter_router.register(
     'counter', PullUpCounterViewSet, 'pullupbars-counter'
 )
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('', include(pullupbars_counter_router.urls)),
 ]

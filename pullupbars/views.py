@@ -2,7 +2,6 @@ import logging
 from decimal import Decimal
 
 from django.forms.models import model_to_dict
-from django.db.models import OuterRef, Exists
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from rest_framework import viewsets
@@ -19,9 +18,8 @@ from drf_spectacular.utils import (
 
 from core.pagination import StandartResultPagination
 from core.permissions import ReadOnly
-from user.models import User
 from .models import PullUpBars
-from .serializers import BarsSerializer
+from .serializers import PullUpBarsSerializer
 
 
 logger = logging.getLogger('db')
@@ -53,22 +51,12 @@ def get_ref_point_from_query_data(value: str) -> Point | None:
 )
 class BarsViewSet(viewsets.ModelViewSet):
     queryset = PullUpBars.objects.all()
-    serializer_class = BarsSerializer
+    serializer_class = PullUpBarsSerializer
     pagination_class = StandartResultPagination
     permission_classes = [IsAdminUser | ReadOnly]
 
     def get_queryset(self):
         queryset = self.queryset
-
-        if self.request.user.is_authenticated:
-            queryset = queryset.annotate(
-                is_favorite=Exists(
-                    User.favorite_pullupbars.through.objects.filter(
-                        user_id=self.request.user.id,
-                        pullupbars_id=OuterRef('pk'),
-                    )
-                )
-            )
 
         ref_point_raw = self.request.query_params.get('ref_point')
         if ref_point_raw:
