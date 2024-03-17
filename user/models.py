@@ -28,6 +28,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     favorite_pullupbars = models.ManyToManyField(
         'pullupbars.PullUpBars', blank=True
     )
+    favorite_training_grounds = models.ManyToManyField(
+        'training_ground.TrainingGround', blank=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = UserManager()
