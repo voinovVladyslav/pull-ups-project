@@ -34,11 +34,11 @@ class PullUpCounterViewSet(ModelViewSet):
 
     def get_queryset(self):
         return PullUpCounter.objects.filter(
-            pullupbar=self.kwargs['bar_pk'], user=self.request.user
+            pullupbar=self.kwargs['pullupbar_pk'], user=self.request.user
         ).order_by('-id')
 
     def perform_create(self, serializer):
-        bar = PullUpBars.objects.filter(id=self.kwargs['bar_pk']).first()
+        bar = PullUpBars.objects.filter(id=self.kwargs['pullupbar_pk']).first()
         if not bar:
             raise ValidationError({'bar_id': 'bars does not exists'})
         serializer.save(user=self.request.user, pullupbar=bar)

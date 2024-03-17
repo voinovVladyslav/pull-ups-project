@@ -42,6 +42,9 @@ class TrainingGroundViewSet(viewsets.ModelViewSet):
     pagination_class = StandartResultPagination
     permission_classes = [IsAdminUser | ReadOnly]
 
+    def get_serializer_class(self):
+        return TrainingGroundSerializer
+
     def get_queryset(self):
         qs = super().get_queryset()
         qs = qs.order_by('-id')
