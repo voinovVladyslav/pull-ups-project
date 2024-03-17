@@ -9,7 +9,7 @@ jobs:
             - name: Test with pytest
               run: |
                   cp .env.example .env
-                  docker compose run python pytest
+                  docker compose run python pytest -n 4
 
     linting:
         runs-on: ubuntu-latest
