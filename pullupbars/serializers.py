@@ -13,7 +13,6 @@ logger = logging.getLogger('db')
 
 class BarsSerializer(GeoModelSerializer):
     location = GeometryField()
-    is_favorite = serializers.BooleanField(required=False, read_only=True)
 
     class Meta:
         model = PullUpBars
@@ -22,7 +21,6 @@ class BarsSerializer(GeoModelSerializer):
             'id',
             'title',
             'location',
-            'is_favorite',
         ]
         read_only_fiels = ['id']
 

@@ -60,16 +60,6 @@ class BarsViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = self.queryset
 
-        if self.request.user.is_authenticated:
-            queryset = queryset.annotate(
-                is_favorite=Exists(
-                    User.favorite_pullupbars.through.objects.filter(
-                        user_id=self.request.user.id,
-                        pullupbars_id=OuterRef('pk'),
-                    )
-                )
-            )
-
         ref_point_raw = self.request.query_params.get('ref_point')
         if ref_point_raw:
             ref_point = get_ref_point_from_query_data(ref_point_raw)

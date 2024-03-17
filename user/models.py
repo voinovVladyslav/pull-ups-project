@@ -25,9 +25,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    favorite_pullupbars = models.ManyToManyField(
-        'pullupbars.PullUpBars', blank=True
-    )
     favorite_training_grounds = models.ManyToManyField(
         'training_ground.TrainingGround', blank=True
     )
