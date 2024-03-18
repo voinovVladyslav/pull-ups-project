@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     # local
     'user',
     'pullupbars',
+    'dipstations',
     'logs',
     'counter',
     'achievements',

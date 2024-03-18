@@ -1,10 +1,10 @@
 from django.db import models
 
 
-class PullUpBars(models.Model):
+class DipStations(models.Model):
     class Meta:
-        verbose_name = 'Pull Up Bars'
-        verbose_name_plural = 'Pull Up Bars'
+        verbose_name = 'Dip Station'
+        verbose_name_plural = 'Dip Stations'
 
     title = models.CharField(
         max_length=255,
@@ -13,4 +13,4 @@ class PullUpBars(models.Model):
     )
 
     def __str__(self):
-        return f'Pull bar #{self.id}'
+        return f'Dip station #{self.id}'

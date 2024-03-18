@@ -8,7 +8,7 @@ from . import views
 app_name = 'pullupbars'
 
 router = routers.DefaultRouter()
-router.register('pullupbars', views.BarsViewSet, 'pullupbars')
+router.register('pullupbars', views.PullUpBarsViewSet, 'pullupbars')
 
 pullupbars_counter_router = routers.NestedSimpleRouter(
     router, 'pullupbars', lookup='pullupbar'

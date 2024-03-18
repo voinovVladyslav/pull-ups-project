@@ -21,6 +21,7 @@ urlpatterns = [
     # api
     path('api/', include('user.urls')),
     path('api/', include('pullupbars.urls')),
+    path('api/', include('dipstations.urls')),
     path('api/', include('achievements.urls')),
     path('api/', include('notifications.urls')),
     path('api/', include('training_ground.urls')),

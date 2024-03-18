@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import PullUpBars
+from .models import DipStations
 
 
-@admin.register(PullUpBars)
-class BarsAdmin(admin.ModelAdmin):
+@admin.register(DipStations)
+class DipStationAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'title',
