@@ -2,6 +2,8 @@ from rest_framework import serializers
 from rest_framework_gis.serializers import GeoModelSerializer
 from rest_framework_gis.fields import GeometryField
 
+from pullupbars.models import PullUpBars
+from dipstations.models import DipStations
 from .models import TrainingGround
 
 
@@ -34,3 +36,10 @@ class TrainingGroundSerializer(GeoModelSerializer):
                 'Latitude shoud be in range from -90 to 90'
             )
         return value
+
+    def create(self, validated_data):
+        tg: TrainingGround = super().create(validated_data)
+        tg.pullupbar = PullUpBars.objects.create()
+        tg.dipstation = DipStations.objects.create()
+        tg.save()
+        return tg
