@@ -1,11 +1,11 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import DipStation
+from .models import DipStations
 
 
 class DipStationSerializer(ModelSerializer):
     class Meta:
-        model = DipStation
+        model = DipStations
         fields = [
             'id',
             'title',

@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class DipStation(models.Model):
+class DipStations(models.Model):
     class Meta:
         verbose_name = 'Dip Station'
         verbose_name_plural = 'Dip Stations'

@@ -18,7 +18,7 @@ class TrainingGround(models.Model):
         related_name='training_ground'
     )
     dipstation = models.OneToOneField(
-        'dipstations.DipStation',
+        'dipstations.DipStations',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

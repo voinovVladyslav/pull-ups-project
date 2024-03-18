@@ -21,3 +21,16 @@ class PullUpCounter(BaseCounter):
         on_delete=models.CASCADE,
         related_name='pullup_counter',
     )
+
+
+class DipCounter(BaseCounter):
+    user = models.ForeignKey(
+        'user.User',
+        on_delete=models.CASCADE,
+        related_name='dip_counter',
+    )
+    # dipstation = models.ForeignKey(
+    #     'dipstations.DipStations',
+    #     on_delete=models.CASCADE,
+    #     related_name='dip_counter',
+    # )

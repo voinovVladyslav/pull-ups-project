@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from .models import DipStation
+from .models import DipStations
 
 
-@admin.register(DipStation)
+@admin.register(DipStations)
 class DipStationAdmin(admin.ModelAdmin):
     list_display = (
         'id',
