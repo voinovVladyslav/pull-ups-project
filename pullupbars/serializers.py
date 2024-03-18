@@ -1,11 +1,6 @@
-import logging
-
 from rest_framework import serializers
 
 from .models import PullUpBars
-
-
-logger = logging.getLogger('db')
 
 
 class PullUpBarsSerializer(serializers.ModelSerializer):
@@ -13,5 +8,6 @@ class PullUpBarsSerializer(serializers.ModelSerializer):
         model = PullUpBars
         fields = [
             'id',
+            'title',
         ]
         read_only_fiels = ['id']
