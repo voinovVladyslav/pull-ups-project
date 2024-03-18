@@ -8,7 +8,7 @@ from .serializers import DipStationSerializer
 
 
 class DipStationViewSet(ModelViewSet):
-    queryset = DipStations.objects.all()
+    queryset = DipStations.objects.all().order_by('-id')
     serializer_class = DipStationSerializer
     pagination_class = StandartResultPagination
     permission_classes = [IsAdminUser | ReadOnly]

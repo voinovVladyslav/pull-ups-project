@@ -1,7 +1,7 @@
 from rest_framework_nested import routers
 from django.urls import path, include
 
-from dipstations.views import DipStationViewSet
+from counter.views import DipCounterViewSet
 from .views import DipStationViewSet
 
 
@@ -14,7 +14,7 @@ dipstation_counter_router = routers.NestedSimpleRouter(
     router, 'dipstations', lookup='dipstation'
 )
 dipstation_counter_router.register(
-    'counter', DipStationViewSet, 'dipstations-counter',
+    'counter', DipCounterViewSet, 'dipstations-counter',
 )
 
 urlpatterns = [

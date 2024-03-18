@@ -29,8 +29,8 @@ class DipCounter(BaseCounter):
         on_delete=models.CASCADE,
         related_name='dip_counter',
     )
-    # dipstation = models.ForeignKey(
-    #     'dipstations.DipStations',
-    #     on_delete=models.CASCADE,
-    #     related_name='dip_counter',
-    # )
+    dipstation = models.ForeignKey(
+        'dipstations.DipStations',
+        on_delete=models.CASCADE,
+        related_name='dip_counter',
+    )
