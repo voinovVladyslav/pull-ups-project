@@ -17,6 +17,7 @@ class TrainingGroundSerializer(GeoModelSerializer):
             'is_favorite',
             'location',
             'pullupbar',
+            'dipstation',
         ]
         read_only_fields = [
             'id',

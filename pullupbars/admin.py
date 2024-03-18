@@ -8,8 +8,12 @@ class BarsAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'title',
+        'training_ground',
     )
     search_fields = (
         'id',
         'title',
+    )
+    readonly_fields = (
+        'id',
     )

@@ -9,7 +9,12 @@ class TrainingGroundAdmin(admin.ModelAdmin):
         'id',
         'location',
         'pullupbar',
+        'dipstation',
+    )
+    search_fields = (
+        'id',
     )
     raw_id_fields = (
         'pullupbar',
+        'dipstation',
     )
