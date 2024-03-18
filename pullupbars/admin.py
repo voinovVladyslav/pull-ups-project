@@ -8,7 +8,6 @@ class BarsAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'title',
-        'location',
     )
     search_fields = (
         'id',

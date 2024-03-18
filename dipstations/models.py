@@ -1,3 +1,16 @@
 from django.db import models
 
-# Create your models here.
+
+class DipStation(models.Model):
+    class Meta:
+        verbose_name = 'Dip Station'
+        verbose_name_plural = 'Dip Stations'
+
+    title = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        return f'Dip station #{self.id}'

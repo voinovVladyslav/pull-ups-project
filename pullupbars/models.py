@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.gis.db.models import PointField
 
 
 class PullUpBars(models.Model):
@@ -11,10 +10,6 @@ class PullUpBars(models.Model):
         max_length=255,
         null=True,
         blank=True,
-    )
-    # x - longitude y - latitude
-    location = PointField(
-        null=True, blank=True, srid=4326, serialize=True, geography=True
     )
 
     def __str__(self):

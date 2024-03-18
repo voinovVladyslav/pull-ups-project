@@ -15,7 +15,14 @@ class TrainingGround(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='training_grounds'
+        related_name='training_ground'
+    )
+    dipstation = models.OneToOneField(
+        'dipstations.DipStation',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='training_ground'
     )
 
     def __str__(self) -> str:
