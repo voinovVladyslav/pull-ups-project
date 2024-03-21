@@ -9,3 +9,8 @@ class UserFilter(AutocompleteFilter):
 class PullUpBarFilter(AutocompleteFilter):
     title = 'Pull Up Bar'
     field_name = 'pullupbar'
+
+
+class DipStationFilter(AutocompleteFilter):
+    title = 'Dip Station'
+    field_name = 'dipstation'
