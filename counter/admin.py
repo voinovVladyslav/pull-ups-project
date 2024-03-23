@@ -22,6 +22,7 @@ class PullUpCounterAdmin(admin.ModelAdmin):
         PullUpBarFilter,
     )
 
+
 @admin.register(DipCounter)
 class DipCounterAdmin(admin.ModelAdmin):
     list_display = (
