@@ -220,7 +220,9 @@ SPECTACULAR_SETTINGS = {
 GRAPH_MODELS = {
     'app_labels': [
         'user',
-        'bars',
+        'pullupbars',
+        'dipstations',
+        'training_ground',
         'logs',
         'counter',
         'achievements',
