@@ -1,3 +1,4 @@
+from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
@@ -49,3 +50,23 @@ class DipCounterViewSet(ModelViewSet):
                 'dipstation_id': 'stations does not exists'
             })
         serializer.save(user=self.request.user, dipstation=station)
+
+
+class PullUpCounterListAPIView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PullUpCounterSerializer
+
+    def get_queryset(self):
+        return PullUpCounter.objects.filter(
+            user=self.request.user
+        ).order_by('-created_at')
+
+
+class DipCounterListAPIView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = DipCounterSerializer
+
+    def get_queryset(self):
+        return DipCounter.objects.filter(
+            user=self.request.user
+        ).order_by('-created_at')
